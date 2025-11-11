@@ -10,8 +10,10 @@ export default function Header() {
         <NavLink to={'/login'}>
           <Button variant="link" className={'text-[16px]'}>Login</Button>
         </NavLink>
+        <NavLink to={'/signup'}>
+          <Button>Sign Up</Button>
+        </NavLink>
 
-        <Button>Sign Up</Button>
       </div>
       {/* <DropDownProfile /> */}
 
