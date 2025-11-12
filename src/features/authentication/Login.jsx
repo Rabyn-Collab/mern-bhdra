@@ -13,6 +13,10 @@ import { useNavigate } from "react-router"
 import { useUserLoginMutation } from "./authApi"
 import { Formik } from "formik"
 import * as Yup from 'yup'
+import toast from "react-hot-toast"
+import { LockKeyhole, LockKeyholeOpenIcon, } from "lucide-react"
+import { useState } from "react"
+import { Spinner } from "../../components/ui/spinner"
 
 const loginShcema = Yup.object({
   email: Yup.string().email().required(),
@@ -21,6 +25,7 @@ const loginShcema = Yup.object({
 
 export default function Login() {
   const nav = useNavigate();
+  const [show, setShow] = useState(false);
   const [loginUser, { isLoading }] = useUserLoginMutation();
   return (
     <div className="p-5">
@@ -43,11 +48,10 @@ export default function Login() {
             }}
             onSubmit={async (val) => {
               try {
-                await loginUser(val).unwrap();
-
+                const response = await loginUser(val).unwrap();
+                toast.success('Login successful');
               } catch (err) {
-                console.log(err);
-
+                toast.error(err.data.data);
               }
 
             }}
@@ -72,25 +76,50 @@ export default function Login() {
                     </p>}
 
                   </div>
-                  <div className="grid gap-2">
-                    <div className="flex items-center">
-                      <Label htmlFor="password">Password</Label>
 
+
+                  <div className='w-full max-w-xs space-y-2'>
+                    <Label>Password</Label>
+                    <div className='relative'>
+                      <Input
+                        onChange={handleChange}
+                        value={values.password}
+                        type={show ? 'text' : 'password'}
+                        name='password' placeholder='******' className='pr-9' />
+
+                      <Button
+                        type='button'
+                        onClick={() => setShow(!show)}
+                        variant='ghost'
+                        size='icon'
+                        className='text-muted-foreground focus-visible:ring-ring/50 absolute inset-y-0 right-0 rounded-l-none hover:bg-transparent'
+                      >
+
+                        {show ? <LockKeyholeOpenIcon /> : <LockKeyhole />}
+
+
+                        <span className='sr-only'>Show password</span>
+                      </Button>
                     </div>
-                    <Input
-                      name='password'
-                      onChange={handleChange}
-                      value={values.password}
-                      id="password" type="password" />
-                    {errors.password && touched.password && <p className="text-red-500"> {errors.password}</p>}
+                    {errors.password && touched.password && <p className="text-red-500">
+                      {errors.password}
+                    </p>}
                   </div>
+
 
 
                 </div>
 
-                <Button type="submit" className="w-full mt-5">
+                {isLoading ? <Button size="sm" variant="outline" disabled className="w-full mt-5">
+                  <Spinner />
+                  Submit
+                </Button> : <Button type="submit" className="w-full mt-5">
                   Login
-                </Button>
+                </Button>}
+
+
+
+
 
               </form>
             )}
