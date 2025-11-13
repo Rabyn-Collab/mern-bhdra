@@ -11,3 +11,8 @@ export const getUserFromLocal = () => {
   const user = localStorage.getItem('user');
   return user ? JSON.parse(user) : null
 }
+
+
+export const removeUserFromLocal = () => {
+  localStorage.clear();
+}
