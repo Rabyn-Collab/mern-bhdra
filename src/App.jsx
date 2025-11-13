@@ -1,41 +1,52 @@
-import StateCard from "./components/StateCard";
+import { createBrowserRouter, RouterProvider } from "react-router"
+import Home from "./pages/home/Home";
+import About from "./pages/about/About";
+import Contact from "./pages/contact/Contact";
+import NotFound from "./pages/not-found/NotFound";
+import Page1 from "./pages/home/nested-pages/Page1";
+import Page2 from "./pages/home/nested-pages/Page2";
 
-// const greet = (personName) => {
-//   console.log(`hello jee ${personName}`);
-// }
+//tailwind css // routing basic concept
 
-// greet('ram');
-// greet('shyam');
-
-const numbers = [11, 22, 33, 44, 55];
+// man path '/'
 
 export default function App() {
 
-  return (
-    <div className="p-5 ">
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <Home />,
+      children: [
+        {
+          path: 'page-1',
+          element: <Page1 />
+        },
+        {
+          path: 'page-2',
+          element: <Page2 />
+        }
+      ]
+    },
+    {
+      path: 'about',
+      element: <About />
+    },
+    {
+      path: 'contact',
+      element: <Contact />
+    },
 
-      {numbers.map((n, i) => {
-        return <h1 key={i}>hello jee</h1>
-      })}
+    {
+      path: '*',
+      element: <NotFound />
 
-      {/* <StateCard
-        location={'Accra'}
-        title={'4 Bedrrom Double Storey Townhouse'}
-        img={'https://images.unsplash.com/photo-1761839257349-037aea1d94de?ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw4fHx8ZW58MHx8fHx8&auto=format&fit=crop&q=60&w=600'} />
+    }
 
-      <StateCard
-
-        img={'https://images.unsplash.com/photo-1761839257864-c6ccab7238de?ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8&auto=format&fit=crop&q=60&w=600'}
-        title={'3 Bedrrom Double Storey Townhouse'}
-        location={'New Block'}
-      /> */}
+  ]);
 
 
 
 
-
-
-    </div>
-  )
+  return <RouterProvider router={router} />
 }
 
