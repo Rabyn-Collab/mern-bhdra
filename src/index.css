@@ -1,1 +1,26 @@
 @import "tailwindcss";
+
+
+/* base component utility */
+
+
+@layer base {
+
+  h1 {
+    @apply text-2xl font-medium;
+  }
+
+  h2 {
+    @apply text-xl font-bold;
+  }
+
+  h3 {
+    @apply text-lg;
+  }
+
+  button {
+    @apply cursor-pointer
+  }
+
+
+}
