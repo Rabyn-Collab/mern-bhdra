@@ -3,6 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 
 
+export const base = 'http://192.168.1.65:5000';
 
 export const mainApi = createApi({
   reducerPath: 'mainApi',

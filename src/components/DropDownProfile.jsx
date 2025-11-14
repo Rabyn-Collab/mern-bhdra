@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useDispatch } from 'react-redux';
 import { removeUser } from '../features/user/userSlice';
+import { useNavigate } from 'react-router';
 
 const userItems = [
   {
@@ -48,6 +49,7 @@ const adminItems = [
 export default function DropDownProfile({ user }) {
   const dispatch = useDispatch();
   const listItems = user.role === 'user' ? userItems : adminItems;
+  const nav = useNavigate();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -66,6 +68,9 @@ export default function DropDownProfile({ user }) {
                 switch (item.property) {
                   case 'Sign Out':
                     dispatch(removeUser());
+                    break;
+                  case 'admin-panel':
+                    nav('/admin-panel');
                     break;
 
                 }
