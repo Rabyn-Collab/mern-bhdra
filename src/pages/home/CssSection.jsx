@@ -37,7 +37,7 @@ export default function CssSection() {
   ];
 
   return (
-    <section className="my-3 grid grid-cols-3 gap-5 ">
+    <section className="my-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 ">
 
 
       {cssData.map(({ icon, title, properties }) => {
