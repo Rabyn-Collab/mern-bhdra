@@ -1,10 +1,11 @@
 import { useGetProductsQuery } from "../products/productApi"
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { base } from "../../app/mainApi";
 import { Button } from "../../components/ui/button";
 import { EditIcon, TrashIcon } from "lucide-react";
 import { useNavigate } from "react-router";
+import { RemoveProduct } from "./RemoveProduct";
 
 
 
@@ -55,14 +56,13 @@ export default function AdminPanel() {
                   <TableCell>{item._id}</TableCell>
                   <TableCell>{item.createdAt}</TableCell>
                   <TableCell>
-                    <Button >
+                    <Button onClick={() => nav(`/product-edit/${item._id}`)} >
                       <EditIcon />
                     </Button>
                   </TableCell>
                   <TableCell >
-                    <Button className={'bg-red-700'}>
-                      <TrashIcon />
-                    </Button>
+                    <RemoveProduct id={item._id} />
+
                   </TableCell>
                 </TableRow>
               ))}

@@ -20,9 +20,9 @@ import { Formik } from "formik"
 import * as Yup from 'yup'
 import { useCreateProductMutation } from "../products/productApi"
 import { Spinner } from "../../components/ui/spinner"
-import toast from "react-hot-toast"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router"
+import { base } from "../../app/mainApi"
 
 
 const valSchema = Yup.object({
@@ -33,15 +33,16 @@ const valSchema = Yup.object({
   brand: Yup.string().required(),
   image: Yup.mixed()
     .test('fileType', 'Unsupported File Format', (val) => {
+      if (!val) return true
       return val && ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'].includes(val.type);
     })
     .test('fileSize', 'file is too large', (val) => {
+      if (!val) return true
       return val && val.size <= 5 * 1024 * 1024;
-    })
-    .required(),
+    }),
 });
 
-export default function ProductAddForm() {
+export default function ProductEditForm({ product }) {
 
   const nav = useNavigate();
 
@@ -58,33 +59,33 @@ export default function ProductAddForm() {
         <CardContent>
           <Formik
             initialValues={{
-              title: '',
-              detail: '',
-              price: '',
-              category: '',
-              brand: '',
+              title: product.title,
+              detail: product.detail,
+              price: product.price,
+              category: product.category,
+              brand: product.brand,
               image: '',
-              imageReview: '',
+              imageReview: product.image,
             }}
 
             onSubmit={async (val) => {
-              try {
-                const formData = new FormData();
-                formData.append('title', val.title);
-                formData.append('detail', val.detail);
-                formData.append('price', val.price);
-                formData.append('category', val.category);
-                formData.append('brand', val.brand);
-                formData.append('image', val.image);
-                await addProduct({
-                  token: user.token,
-                  body: formData
-                }).unwrap();
-                toast.success('Product added successfully');
-                nav(-1);
-              } catch (err) {
-                toast.error(err.data.message);
-              }
+              // try {
+              //   const formData = new FormData();
+              //   formData.append('title', val.title);
+              //   formData.append('detail', val.detail);
+              //   formData.append('price', val.price);
+              //   formData.append('category', val.category);
+              //   formData.append('brand', val.brand);
+              //   formData.append('image', val.image);
+              //   await addProduct({
+              //     token: user.token,
+              //     body: formData
+              //   }).unwrap();
+              //   toast.success('Product added successfully');
+              //   nav(-1);
+              // } catch (err) {
+              //   toast.error(err.data.message);
+              // }
 
             }} validationSchema={valSchema}
           >
@@ -133,6 +134,7 @@ export default function ProductAddForm() {
 
                   <Select
                     name="category"
+                    value={values.category}
                     onValueChange={(value) => setFieldValue('category', value)}
                   >
                     <SelectTrigger
@@ -153,6 +155,7 @@ export default function ProductAddForm() {
 
                   <Select
                     name="brand"
+                    value={values.brand}
                     onValueChange={(value) => setFieldValue('brand', value)}
                   >
                     <SelectTrigger className="w-full">
@@ -187,7 +190,7 @@ export default function ProductAddForm() {
 
                     />
                     {touched.image && errors.image && <p className="text-red-500">{errors.image}</p>}
-                    {values.imageReview && !errors.image && <img src={values.imageReview} alt="" />}
+                    {values.imageReview && !errors.image && <img src={!values.image ? `${base}/${values.imageReview}` : values.imageReview} alt="" />}
                   </div>
 
                   {isLoading ? <Button size="sm" variant="outline" disabled className="w-full mt-5">
