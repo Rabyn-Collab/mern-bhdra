@@ -7,6 +7,7 @@ import Register from './features/authentication/Register';
 import AdminPanel from './features/admin/AdminPanel';
 import ProductAddForm from './features/admin/ProductAddForm';
 import ProductEdit from './features/admin/ProductEdit';
+import ProductDetail from './features/products/ProductDetail';
 
 export default function App() {
 
@@ -30,6 +31,10 @@ export default function App() {
         {
           path: 'admin-panel',
           element: <AdminPanel />
+        },
+        {
+          path: 'products/:id',
+          element: < ProductDetail />
         },
         {
           path: 'product-edit/:id',

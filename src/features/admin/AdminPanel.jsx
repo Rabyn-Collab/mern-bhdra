@@ -3,9 +3,10 @@ import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { base } from "../../app/mainApi";
 import { Button } from "../../components/ui/button";
-import { EditIcon, TrashIcon } from "lucide-react";
+import { EditIcon } from "lucide-react";
 import { useNavigate } from "react-router";
 import { RemoveProduct } from "./RemoveProduct";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 
 
@@ -18,7 +19,11 @@ export default function AdminPanel() {
 
   const { isLoading, error, data } = useGetProductsQuery();
 
-  if (isLoading) return <h1>Loading...</h1>
+  if (isLoading) return <DotLottieReact
+    src="loading.lottie"
+    loop
+    autoplay
+  />
   if (error) return <h1 className="text-pink-950">{error}</h1>
   return (
     <div className="p-5">
@@ -42,7 +47,7 @@ export default function AdminPanel() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.products.map(item => (
+              {data?.products.map(item => (
                 <TableRow key={item._id}>
                   <TableCell>
                     <div className='flex items-center gap-3'>
