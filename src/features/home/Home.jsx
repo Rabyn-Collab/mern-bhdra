@@ -1,4 +1,3 @@
-import { Skeleton } from "../../components/ui/skeleton";
 import { useGetProductsQuery } from "../products/productApi"
 import ProductCard from "../products/ProductCard";
 import ProductCardSkeleton from "../products/ProductCardSkeleton";

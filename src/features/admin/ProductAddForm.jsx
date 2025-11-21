@@ -62,6 +62,7 @@ export default function ProductAddForm() {
               detail: '',
               price: '',
               category: '',
+              stock: '',
               brand: '',
               image: '',
               imageReview: '',
@@ -73,6 +74,7 @@ export default function ProductAddForm() {
                 formData.append('title', val.title);
                 formData.append('detail', val.detail);
                 formData.append('price', val.price);
+                formData.append('stock', val.stock);
                 formData.append('category', val.category);
                 formData.append('brand', val.brand);
                 formData.append('image', val.image);
@@ -129,6 +131,19 @@ export default function ProductAddForm() {
                       placeholder="product price"
                     />
                     {touched.price && errors.price && <p className="text-red-500">{errors.price}</p>}
+                  </div>
+
+                  <div className="grid gap-2">
+                    <Label htmlFor="stock">Stock</Label>
+                    <Input
+                      name="stock"
+                      onChange={handleChange}
+                      value={values.stock}
+                      id="stock"
+                      type="number"
+                      placeholder="product stock"
+                    />
+                    {touched.stock && errors.stock && <p className="text-red-500">{errors.stock}</p>}
                   </div>
 
                   <Select

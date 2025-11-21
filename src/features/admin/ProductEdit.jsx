@@ -12,7 +12,7 @@ export default function ProductEdit() {
     <>
 
       <h1 className="text-2xl font-bold">Product Edit</h1>
-      <ProductEditForm product={data.data} />
+      <ProductEditForm product={data.product} />
 
 
 

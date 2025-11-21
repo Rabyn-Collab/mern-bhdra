@@ -18,7 +18,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "../../components/ui/textarea"
 import { Formik } from "formik"
 import * as Yup from 'yup'
-import { useCreateProductMutation, useUpdateProductMutation } from "../products/productApi"
+import { useUpdateProductMutation } from "../products/productApi"
 import { Spinner } from "../../components/ui/spinner"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router"
@@ -63,6 +63,7 @@ export default function ProductEditForm({ product }) {
               title: product.title,
               detail: product.detail,
               price: product.price,
+              stock: product.stock,
               category: product.category,
               brand: product.brand,
               image: '',
@@ -77,6 +78,8 @@ export default function ProductEditForm({ product }) {
                 formData.append('price', val.price);
                 formData.append('category', val.category);
                 formData.append('brand', val.brand);
+                formData.append('stock', val.stock);
+
                 if (val.image) {
                   formData.append('image', val.image);
                 }
@@ -136,6 +139,19 @@ export default function ProductEditForm({ product }) {
                       placeholder="product price"
                     />
                     {touched.price && errors.price && <p className="text-red-500">{errors.price}</p>}
+                  </div>
+
+                  <div className="grid gap-2">
+                    <Label htmlFor="stock">Stock</Label>
+                    <Input
+                      name="stock"
+                      onChange={handleChange}
+                      value={values.stock}
+                      id="stock"
+                      type="number"
+                      placeholder="product stock"
+                    />
+                    {touched.stock && errors.stock && <p className="text-red-500">{errors.stock}</p>}
                   </div>
 
                   <Select
