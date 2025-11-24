@@ -8,6 +8,7 @@ import AdminPanel from './features/admin/AdminPanel';
 import ProductAddForm from './features/admin/ProductAddForm';
 import ProductEdit from './features/admin/ProductEdit';
 import ProductDetail from './features/products/ProductDetail';
+import CheckOut from './features/carts/CheckOut';
 
 export default function App() {
 
@@ -43,6 +44,10 @@ export default function App() {
         {
           path: 'product-add',
           element: <ProductAddForm />
+        },
+        {
+          path: 'checkout',
+          element: <CheckOut />
         }
 
       ]

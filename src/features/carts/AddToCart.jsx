@@ -1,24 +1,30 @@
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "./cartSlice";
+import { useNavigate } from "react-router";
 
 export default function AddToCart({ product }) {
-  const [qty, setQty] = useState(1);
+  const { carts } = useSelector((state) => state.cartSlice);
+  const isExist = carts.find((cart) => cart.id === product._id);
+  const [qty, setQty] = useState(isExist?.qty || 1);
   const dispatch = useDispatch();
   const increment = () => setQty(qty + 1);
   const decrement = () => setQty(qty - 1);
-
+  const nav = useNavigate();
   const handleCart = () => {
     dispatch(setCart({
+      id: product._id,
       title: product.title,
       price: product.price,
       stock: product.stock,
+      brand: product.brand,
+      category: product.category,
       image: product.image,
       qty
     }));
-
+    nav('/checkout');
   }
 
   return (
