@@ -29,8 +29,26 @@ export default function Home() {
       </div>
 
 
-
+      {/* <ChildCompo label={'hello jee'} age={90}>
+        <h1>sello jee</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo sunt, vero sit quas tempora assumenda possimus. Unde accusamus, provident at voluptatem eius sunt quae ducimus exercitationem animi nemo facilis placeat.</p>
+      </ChildCompo> */}
 
     </div>
   )
 }
+
+
+
+// function ChildCompo({ label, age, children }) {
+//   return (
+//     <div>
+//       {children}
+
+//       <h1>{label}</h1>
+//       <p>{age}</p>
+
+//     </div>
+//   )
+// }
+

@@ -10,6 +10,7 @@ export default function AddToCart({ product }) {
   const isExist = carts.find((cart) => cart.id === product._id);
   const [qty, setQty] = useState(isExist?.qty || 1);
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.userSlice);
   const increment = () => setQty(qty + 1);
   const decrement = () => setQty(qty - 1);
   const nav = useNavigate();
@@ -42,7 +43,7 @@ export default function AddToCart({ product }) {
 
       </div>
 
-      <Button onClick={handleCart} size="lg" className={'bg-green-600'}>Add To Cart</Button>
+      <Button disabled={user?.role === 'admin' || !user} onClick={handleCart} size="lg" className={'bg-green-600'}>Add To Cart</Button>
 
 
 

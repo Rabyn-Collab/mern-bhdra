@@ -16,6 +16,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import ShowDialog from '../../components/ShowDialog';
+import CheckOutPart from './CheckOutPart';
 
 export default function CheckOut() {
   const { carts } = useSelector((state) => state.cartSlice);
@@ -35,6 +37,8 @@ export default function CheckOut() {
   return (
     <div>
       <h2 className='font-semibold mb-5'>CheckOut Page</h2>
+
+
       <div className='grid grid-cols-[1.4fr_1fr]'>
         <div className='w-full'>
           <div className='[&>div]:rounded-sm [&>div]:border'>
@@ -84,28 +88,24 @@ export default function CheckOut() {
                       </div>
 
                     </TableCell>
-                    <TableCell>Rs. {item.price}</TableCell>
+                    <TableCell>Rs. {item.price * item.qty}</TableCell>
                     <TableCell className='flex items-center gap-1'>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant='ghost' size='icon' className='rounded-full' aria-label={`product-${item.id}-remove`}>
-                            <Trash2Icon />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              This action cannot be undone. This will permanently delete your
-                              account and remove your data from our servers.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => handleRemoveItem(item)}>Continue</AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+
+
+
+                      <ShowDialog
+                        func={() => handleRemoveItem(item)}
+
+                        detail={'This action cannot be undone. This will permanently delete youraccount and remove your data from our servers.'}>
+
+                        <Button variant='ghost' size='icon' className='rounded-full' >
+                          <Trash2Icon />
+                        </Button>
+
+
+
+                      </ShowDialog>
+
 
 
 
@@ -117,6 +117,16 @@ export default function CheckOut() {
           </div>
 
         </div>
+
+
+        <CheckOutPart carts={carts} />
+
+
+
+
+
+
+
       </div>
     </div>
   )
