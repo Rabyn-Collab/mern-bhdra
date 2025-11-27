@@ -5,7 +5,10 @@ export default function RootLayout() {
   return (
     <div>
       <Header />
-      <Outlet />
+      <main className="px-20">
+        <Outlet />
+      </main>
+
     </div>
   )
 }
