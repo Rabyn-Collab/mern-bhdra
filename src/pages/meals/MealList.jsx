@@ -1,10 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router";
+import { useNavigate } from "react-router";
 import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar";
 
 export default function MealList() {
-  const [params, setParams] = useSearchParams();
   const [data, setData] = useState([]);
   const [load, setLoad] = useState(false);
   const [err, setErr] = useState();
