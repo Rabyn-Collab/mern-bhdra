@@ -18,7 +18,7 @@ export default function CheckOutPart({ carts }) {
         token: user.token,
         body: {
           products: carts.map((item) => ({
-            productId: item.id,
+            product: item.id,
             quantity: item.qty
           })),
           totalAmount
@@ -54,7 +54,7 @@ export default function CheckOutPart({ carts }) {
       <ShowDialog
         func={handleOrder}
         detail={' you want to buy products '}>
-        <Button disabled={isLoading} className={' mt-9 px-9 bg-green-700'}>
+        <Button disabled={isLoading || !carts.length} className={' mt-9 px-9 bg-green-700'}>
           {isLoading && <Spinner />}
           Checkout</Button>
       </ShowDialog>

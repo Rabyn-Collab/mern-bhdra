@@ -9,6 +9,8 @@ import ProductAddForm from './features/admin/ProductAddForm';
 import ProductEdit from './features/admin/ProductEdit';
 import ProductDetail from './features/products/ProductDetail';
 import CheckOut from './features/carts/CheckOut';
+import UserProfile from './features/profile/UserProfile';
+import Order from './features/orders/Order';
 
 export default function App() {
 
@@ -28,6 +30,14 @@ export default function App() {
         {
           path: 'signup',
           element: <Register />
+        },
+        {
+          path: 'profile',
+          element: <UserProfile />
+        },
+        {
+          path: 'order/:id',
+          element: <Order />
         },
         {
           path: 'admin-panel',

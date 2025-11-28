@@ -12,7 +12,7 @@ export default function ProductDetail() {
     loop
     autoplay
   />
-  if (error) return <h3 className="text-pink-500">{error.data?.message}</h3>
+  if (error) return <h1 className="text-pink-500">{error?.error || error.data?.message}</h1>
 
 
 

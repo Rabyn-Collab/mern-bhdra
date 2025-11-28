@@ -4,6 +4,7 @@ import ProductCardSkeleton from "../products/ProductCardSkeleton";
 
 export default function Home() {
   const { isLoading, error, data } = useGetProductsQuery();
+
   if (isLoading) return <div className="grid grid-cols-4 gap-6 mt-4 items-start">
     <ProductCardSkeleton />
     <ProductCardSkeleton />
@@ -15,7 +16,7 @@ export default function Home() {
     <ProductCardSkeleton />
   </div>
 
-  if (error) return <h1 className="text-pink-950">{error}</h1>
+  if (error) return <h1 className="text-pink-500">{error?.error || error.data?.message}</h1>
 
   return (
     <div>
