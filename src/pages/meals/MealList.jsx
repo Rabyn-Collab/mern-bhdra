@@ -15,7 +15,7 @@ export default function MealList() {
 
   if (err) return <h1 className="text-red-600">{err.data}</h1>
   return (
-    <div className="my-10 grid grid-cols-4 justify-items-center gap-11">
+    <div className="my-10 grid grid-cols-4 max-lg:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1 justify-items-center gap-11">
 
 
       {data && data.meals.map((meal) => {

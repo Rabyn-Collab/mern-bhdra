@@ -20,7 +20,7 @@ export default function Meal() {
         return <div key={meal.idMeal} className='space-y-4'>
           <h1>{meal.strMeal}</h1>
 
-          <div className='grid grid-cols-2 gap-5'>
+          <div className='grid grid-cols-2 max-md:grid-cols-1 gap-5'>
             <iframe
               allowFullScreen
               className='w-full h-[400px]'
@@ -30,7 +30,7 @@ export default function Meal() {
 
           </div>
 
-          <div className='flex gap-10 divide-x-4 divide-indigo-500'>
+          <div className='flex flex-wrap gap-10 divide-x-4 divide-indigo-500'>
             <div className='pr-2'>
               <h1 className='mb-2'>Ingredients</h1>
               {Object.keys(meal).map((key) => {

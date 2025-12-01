@@ -7,7 +7,7 @@ export default function Home() {
 
 
 
-      <div className='flex items-center text-center'>
+      <div className='flex items-center text-center max-lg:justify-center max-lg:flex-wrap'>
         <img src="https://www.themealdb.com/images/meal-icon.png" alt="" />
         <div className='space-y-3'>
           <h1 className='font-bold text-3xl'>Welcome to TheMealDB</h1>
@@ -16,6 +16,8 @@ export default function Home() {
         </div>
 
         <img src="https://www.themealdb.com/images/meal-icon.png" alt="" />
+
+
       </div>
 
 

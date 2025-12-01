@@ -13,7 +13,7 @@ export default function MealCategories() {
   if (err) return <h1 className="text-red-600">{err.data}</h1>
 
   return (
-    <div className="grid grid-cols-3 gap-5 mb-10">
+    <div className="grid grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1 gap-5 mb-10">
       {data && data.categories.map((item) => {
         return <Card key={item.idCategory} className='overflow-hidden pt-0'>
           <CardContent className='px-0'>
