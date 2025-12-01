@@ -1,7 +1,7 @@
-import React from 'react'
-import MealCategories from '../meals/MealCategories'
+import MealCategories from "../meals/MealCategories";
 
 export default function Home() {
+
   return (
     <div>
 

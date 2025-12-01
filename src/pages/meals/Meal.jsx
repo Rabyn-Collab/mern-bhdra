@@ -1,56 +1,20 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
+import { useApi } from '../../hooks/apiHooks';
+import { getMeal } from '../../config/apis';
 
 export default function Meal() {
   const { id } = useParams();
 
-  const [data, setData] = useState([]);
-  const [load, setLoad] = useState(false);
-  const [err, setErr] = useState();
-
-  const getData = async () => {
-    try {
-      setLoad(true);
-      const response = await axios.get('https://www.themealdb.com/api/json/v1/1/lookup.php', {
-        params: { i: id }
-      });
-      setLoad(false);
-      setData(response.data.meals);
-    } catch (err) {
-      setLoad(false);
-      setErr(err);
-    }
-  }
-
-  useEffect(() => {
-    getData();
-  }, []);
+  const [data, load, err] = useApi(getMeal, { i: id })
 
   if (load) return <h1>Loading...</h1>
 
-  if (err) return <h1 className="text-red-600">{err}</h1>
-
-  console.log(data);
-
-  // const person = {
-  //   name: 'John Doe',
-  //   age: 30,
-  //   address: {
-  //     street: '123 Main St',
-  //     city: 'Anytown',
-  //     state: 'CA',
-  //     zip: '12345',
-  //
-  //   }
-  // };
-  //  person['age'];
+  if (err) return <h1 className="text-red-600">{err.data}</h1>
 
   return (
     <div className='my-10'>
 
-      {data && data.map((meal) => {
-
+      {data && data.meals.map((meal) => {
         const urlId = meal.strYoutube.split('=')[1];
 
         return <div key={meal.idMeal} className='space-y-4'>
