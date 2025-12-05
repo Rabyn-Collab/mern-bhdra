@@ -1,34 +1,33 @@
-import MealCategories from "../meals/MealCategories";
+import { memo, useCallback, useMemo, useState } from "react";
+import { Input } from "../../components/ui/input";
+import { Button } from "../../components/ui/button";
+import ChildComponent from "./ChildComponent";
+
 
 export default function Home() {
 
+  const [count, setCount] = useState(1);
+
+  const func = () => {
+    alert('hello');
+  };
+
+
+
   return (
-    <div>
+    <div className="max-w-sm">
 
 
+      {/* 
+      <Input placeholder="Search" /> */}
 
-      <div className='flex items-center text-center max-lg:justify-center max-lg:flex-wrap'>
-        <img src="https://www.themealdb.com/images/meal-icon.png" alt="" />
-        <div className='space-y-3'>
-          <h1 className='font-bold text-3xl'>Welcome to TheMealDB</h1>
-          <p>Welcome to TheMealDB: An open, crowd-sourced database of recipes from around the world.
-            We offer a free recipe API for anyone wanting to use it, with additional premium features if required.</p>
-        </div>
-
-        <img src="https://www.themealdb.com/images/meal-icon.png" alt="" />
-
-
-      </div>
-
-
-      <MealCategories />
-
-
-
-
-
-
+      <h1>{count}</h1>
+      <Button onClick={() => setCount(count + 1)} >Increment</Button>
+      <ChildComponent func={func} />
 
     </div>
   )
 }
+
+
+
