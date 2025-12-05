@@ -1,9 +1,33 @@
+import { Formik } from "formik";
 import { useGetProductsQuery } from "../products/productApi"
 import ProductCard from "../products/ProductCard";
 import ProductCardSkeleton from "../products/ProductCardSkeleton";
+import { Input } from "../../components/ui/input";
+import { Button } from "../../components/ui/button";
+import { useSearchParams } from "react-router";
+import { useEffect } from "react";
 
 export default function Home() {
-  const { isLoading, error, data } = useGetProductsQuery();
+  const [params, setPrams] = useSearchParams();
+
+  const querYPage = params.get('page') ?? 1;
+
+  const query = params.get('search') ? {
+    search: params.get('search')
+  } : null;
+  const { isLoading, error, data } = useGetProductsQuery({
+    ...query,
+    page: querYPage
+  });
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth"
+    });
+  }, [querYPage]);
+
 
   if (isLoading) return <div className="grid grid-cols-4 gap-6 mt-4 items-start">
     <ProductCardSkeleton />
@@ -23,6 +47,32 @@ export default function Home() {
 
 
       <h1>Welcome To Shop Online</h1>
+
+      <Formik
+        initialValues={{
+          search: ''
+        }}
+        onSubmit={(val, { resetForm }) => {
+          setPrams({ search: val.search });
+          resetForm();
+        }}
+      >
+        {({ handleChange, handleSubmit, values, touched, errors }) => (
+          <form onSubmit={handleSubmit} className="mt-4 mb-4 max-w-sm">
+            <div className="flex gap-5">
+              <Input
+                value={values.search}
+                onChange={handleChange}
+                name="search" placeholder="Search" />
+              <Button>Search</Button>
+            </div>
+
+          </form>
+        )}
+      </Formik>
+
+
+
       <div className="grid grid-cols-4 gap-6 mt-4 items-start">
         {data.products.map((product) => {
           return <ProductCard key={product._id} product={product} />
@@ -30,26 +80,18 @@ export default function Home() {
       </div>
 
 
-      {/* <ChildCompo label={'hello jee'} age={90}>
-        <h1>sello jee</h1>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo sunt, vero sit quas tempora assumenda possimus. Unde accusamus, provident at voluptatem eius sunt quae ducimus exercitationem animi nemo facilis placeat.</p>
-      </ChildCompo> */}
+      <div className="flex gap-5 my-5 justify-center">
+        <Button disabled={Number(querYPage) === 1} onClick={() => setPrams({ page: Number(querYPage) - 1 })}>Prev</Button>
+        <h1>{params.get('page') ?? 1}</h1>
+        <Button onClick={() => setPrams({ page: Number(querYPage) + 1 })} disabled={data.totalPages === Number(querYPage)}>Next</Button>
+      </div>
+
+
+
 
     </div>
   )
 }
 
 
-
-// function ChildCompo({ label, age, children }) {
-//   return (
-//     <div>
-//       {children}
-
-//       <h1>{label}</h1>
-//       <p>{age}</p>
-
-//     </div>
-//   )
-// }
 
