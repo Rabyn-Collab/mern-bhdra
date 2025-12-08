@@ -43,41 +43,46 @@ export default function Home() {
   if (error) return <h1 className="text-pink-500">{error?.error || error.data?.message}</h1>
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
 
 
-      <h1>Welcome To Shop Online</h1>
+      <main className="grow">
+        <h1>Welcome To Shop Online</h1>
 
-      <Formik
-        initialValues={{
-          search: ''
-        }}
-        onSubmit={(val, { resetForm }) => {
-          setPrams({ search: val.search });
-          resetForm();
-        }}
-      >
-        {({ handleChange, handleSubmit, values, touched, errors }) => (
-          <form onSubmit={handleSubmit} className="mt-4 mb-4 max-w-sm">
-            <div className="flex gap-5">
-              <Input
-                value={values.search}
-                onChange={handleChange}
-                name="search" placeholder="Search" />
-              <Button>Search</Button>
-            </div>
+        <Formik
+          initialValues={{
+            search: ''
+          }}
+          onSubmit={(val, { resetForm }) => {
+            setPrams({ search: val.search });
+            resetForm();
+          }}
+        >
+          {({ handleChange, handleSubmit, values, touched, errors }) => (
+            <form onSubmit={handleSubmit} className="mt-4 mb-4 max-w-sm">
+              <div className="flex gap-5">
+                <Input
+                  value={values.search}
+                  onChange={handleChange}
+                  name="search" placeholder="Search" />
+                <Button>Search</Button>
+              </div>
 
-          </form>
-        )}
-      </Formik>
+            </form>
+          )}
+        </Formik>
 
 
 
-      <div className="grid grid-cols-4 gap-6 mt-4 items-start">
-        {data.products.map((product) => {
-          return <ProductCard key={product._id} product={product} />
-        })}
-      </div>
+        <div className="grid grid-cols-4 gap-6 mt-4 items-start">
+          {data.products.map((product) => {
+            return <ProductCard key={product._id} product={product} />
+          })}
+        </div>
+
+
+      </main>
+
 
 
       <div className="flex gap-5 my-5 justify-center">
