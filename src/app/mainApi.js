@@ -7,6 +7,6 @@ export const base = 'https://mern-ashad.onrender.com';
 
 export const mainApi = createApi({
   reducerPath: 'mainApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://mern-ashad.onrender.com//api' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://mern-ashad.onrender.com/api' }),
   endpoints: (builder) => ({})
 });
