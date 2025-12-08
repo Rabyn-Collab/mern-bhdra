@@ -10,21 +10,21 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+
   build: {
     outDir: "dist",
-
-    // Remove warning — optional (set your own limit)
-    chunkSizeWarningLimit: 1200,
+    chunkSizeWarningLimit: 1500,
 
     rollupOptions: {
       output: {
-        // Auto split big node_modules into separate chunks
         manualChunks(id) {
           if (id.includes("node_modules")) {
-            return id
+            const chunkName = id
               .toString()
               .split("node_modules/")[1]
-              .split("/")[0]
+              .split("/")[0];
+
+            return chunkName;
           }
         },
       },
