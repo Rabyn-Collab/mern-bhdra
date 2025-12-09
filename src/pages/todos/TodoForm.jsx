@@ -11,9 +11,48 @@ import { Label } from "@/components/ui/label"
 import { Formik } from "formik"
 import { RadioGroup, RadioGroupItem } from "../../components/ui/radio-group"
 import { Checkbox } from "../../components/ui/checkbox"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Textarea } from "../../components/ui/textarea"
+import * as Yup from "yup";
+import { useState } from "react"
+import { EyeIcon, EyeOffIcon } from "lucide-react"
+
+
+
+const todoSchema = Yup.object({
+  email: Yup.string().email().required(),
+  // password: Yup.string()
+  //   .matches(
+  //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+  //     "Password must contain at least 8 characters, one uppercase, one lowercase, one number, and one special character."
+  //   )
+  //   .required(),
+  username: Yup.string().min(3).required(),
+  gender: Yup.string().required(),
+  habits: Yup.array().min(1).required(),
+  country: Yup.string().required(),
+  message: Yup.string().min(10).max(500).required(),
+  image: Yup.mixed()
+    .test('fileType', 'Invalid file type', (val) => {
+      return val && ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/jpg'].includes(val.type);
+    }).test('fileSize', 'max size limit 1mb', (val) => {
+      return val && val.size <= 1024 * 1024 * 1;
+    })
+
+    .required(),
+});
 
 
 export default function TodoForm() {
+  const [show, setShow] = useState(false);
+
+
   return (
     <div >
 
@@ -33,14 +72,20 @@ export default function TodoForm() {
             initialValues={{
               email: '',
               username: '',
+              password: '',
               gender: 'male',
-              habits: []
+              habits: [],
+              country: '',
+              message: '',
+              image: '',
+              imagePreview: ''
             }}
 
             onSubmit={(val) => {
               console.log(val);
 
             }}
+            validationSchema={todoSchema}
 
           >
             {({ handleChange, handleSubmit, values, errors, setFieldValue, touched }) => (
@@ -56,10 +101,47 @@ export default function TodoForm() {
                       value={values.email}
                       onChange={handleChange}
                       id="email"
-                      type="email"
+
+
                       placeholder="m@example.com"
                     />
+                    {errors.email && touched.email && <p className="text-pink-500">{errors.email}</p>}
                   </div>
+
+
+
+                  <div className="grid gap-2">
+                    <Label htmlFor="password">Password</Label>
+
+                    <div className="relative">
+
+                      <Input
+                        name="password"
+                        value={values.password}
+                        onChange={handleChange}
+                        type={show ? 'text' : 'password'}
+                        placeholder="*****"
+                      />
+                      <Button
+                        onClick={() => setShow(!show)}
+                        className="absolute inset-y-0 right-0"
+                        type="button"
+                        variant={'ghost'}
+                        size={'icon'}
+                      >
+
+                        {show ? <EyeIcon /> : <EyeOffIcon />}
+
+
+                      </Button>
+
+                    </div>
+
+                    {errors.password && touched.password && <p className="text-pink-500">{errors.password}</p>}
+                  </div>
+
+
+
 
                   <div className="grid gap-2">
                     <Label htmlFor="username">Username</Label>
@@ -70,6 +152,9 @@ export default function TodoForm() {
                       id="username"
                       placeholder="JohnDoe"
                     />
+
+                    {errors.username && touched.username && <p className="text-pink-500">{errors.username}</p>}
+
                   </div>
 
 
@@ -91,6 +176,7 @@ export default function TodoForm() {
                       </div>
 
                     </RadioGroup>
+                    {errors.gender && touched.gender && <p className="text-pink-500">{errors.gender}</p>}
 
                   </div>
 
@@ -99,11 +185,16 @@ export default function TodoForm() {
                     <h4>Select Your Habits</h4>
                     <div className="flex gap-2">
                       <Checkbox
-                        onChange={(e) => {
-                          console.log(e);
+                        onCheckedChange={(e) => {
+                          if (e) {
+                            setFieldValue('habits', [...values.habits, 'sleeping']);
+                          } else {
+                            setFieldValue('habits', values.habits.filter((item) => item !== 'sleeping'));
+
+                          }
                         }}
                         name="habits" id="ch1" value="sleeping"
-                      // onChange={handleChange}
+
                       />
                       <Label htmlFor="ch1">Sleeping</Label>
                     </div>
@@ -111,13 +202,19 @@ export default function TodoForm() {
                       <Checkbox name="habits" id="ch2"
                         value="coding"
 
-                        onChange={(e) => {
-                          console.log(e);
+                        onCheckedChange={(e) => {
+                          if (e) {
+                            setFieldValue('habits', [...values.habits, 'coding']);
+                          } else {
+                            setFieldValue('habits', values.habits.filter((item) => item !== 'coding'));
+
+                          }
                         }}
 
                       />
                       <Label htmlFor="ch2">Coding</Label>
                     </div>
+                    {errors.habits && touched.habits && <p className="text-pink-500">{errors.habits}</p>}
 
 
                   </div>
@@ -125,10 +222,56 @@ export default function TodoForm() {
 
 
 
+                  <div className="space-y-3">
+                    <h4>Select Your Country</h4>
+                    <Select
+                      onValueChange={(e) => setFieldValue('country', e)}
+                    >
+                      <SelectTrigger
+                        className="w-[180px]">
+                        <SelectValue
+                          placeholder="Country" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Nepal">Nepal</SelectItem>
+                        <SelectItem value="India">India</SelectItem>
+                        <SelectItem value="China">China</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    {errors.country && touched.country && <p className="text-pink-500">{errors.country}</p>}
+                  </div>
 
 
 
+                  <div>
+                    <Textarea
+                      name="message"
+                      onChange={handleChange}
+                      value={values.message}
+                      placeholder="Your Message" />
+                    {errors.message && touched.message && <p className="text-pink-500">{errors.message}</p>}
+                  </div>
 
+                  <div>
+                    <Input
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        setFieldValue('imagePreview', URL.createObjectURL(file))
+                        setFieldValue('image', file);
+
+                      }}
+                      name="image"
+                      type={'file'} />
+
+
+                    {values.imagePreview && !errors.image && <div className="mt-2 ">
+                      <img className="h-[200px]" src={values.imagePreview} alt="" />
+                    </div>}
+
+                    {errors.image && touched.image && <p className="text-pink-500">{errors.image}</p>}
+
+
+                  </div>
 
 
 
