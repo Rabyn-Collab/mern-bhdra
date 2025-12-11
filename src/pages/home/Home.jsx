@@ -1,15 +1,19 @@
-import PostForm from "../posts/PostForm";
+import { useState } from "react";
 import TodoForm from "../todos/TodoForm";
 
 
 
 export default function Home() {
+
+  const [users, setUsers] = useState([]);
+
+
+  console.log(users);
   return (
     <div>
 
-      {/* <TodoForm /> */}
+      <TodoForm setUsers={setUsers} users={users} />
 
-      <PostForm />
 
 
     </div>

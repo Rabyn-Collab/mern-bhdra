@@ -38,18 +38,18 @@ const todoSchema = Yup.object({
   habits: Yup.array().min(1).required(),
   country: Yup.string().required(),
   message: Yup.string().min(10).max(500).required(),
-  image: Yup.mixed()
-    .test('fileType', 'Invalid file type', (val) => {
-      return val && ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/jpg'].includes(val.type);
-    }).test('fileSize', 'max size limit 1mb', (val) => {
-      return val && val.size <= 1024 * 1024 * 1;
-    })
+  // image: Yup.mixed()
+  //   .test('fileType', 'Invalid file type', (val) => {
+  //     return val && ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/jpg'].includes(val.type);
+  //   }).test('fileSize', 'max size limit 1mb', (val) => {
+  //     return val && val.size <= 1024 * 1024 * 1;
+  //   })
 
-    .required(),
+  //   .required(),
 });
 
 
-export default function TodoForm() {
+export default function TodoForm({ setUsers, users }) {
   const [show, setShow] = useState(false);
 
 
@@ -72,17 +72,17 @@ export default function TodoForm() {
             initialValues={{
               email: '',
               username: '',
-              password: '',
+              // password: '',
               gender: 'male',
               habits: [],
               country: '',
               message: '',
-              image: '',
-              imagePreview: ''
+              // image: '',
+              // imagePreview: ''
             }}
 
             onSubmit={(val) => {
-              console.log(val);
+              setUsers([...users, val])
 
             }}
             validationSchema={todoSchema}
@@ -110,7 +110,7 @@ export default function TodoForm() {
 
 
 
-                  <div className="grid gap-2">
+                  {/* <div className="grid gap-2">
                     <Label htmlFor="password">Password</Label>
 
                     <div className="relative">
@@ -138,7 +138,7 @@ export default function TodoForm() {
                     </div>
 
                     {errors.password && touched.password && <p className="text-pink-500">{errors.password}</p>}
-                  </div>
+                  </div> */}
 
 
 
@@ -252,7 +252,7 @@ export default function TodoForm() {
                     {errors.message && touched.message && <p className="text-pink-500">{errors.message}</p>}
                   </div>
 
-                  <div>
+                  {/* <div>
                     <Input
                       onChange={(e) => {
                         const file = e.target.files[0];
@@ -271,7 +271,7 @@ export default function TodoForm() {
                     {errors.image && touched.image && <p className="text-pink-500">{errors.image}</p>}
 
 
-                  </div>
+                  </div> */}
 
 
 
