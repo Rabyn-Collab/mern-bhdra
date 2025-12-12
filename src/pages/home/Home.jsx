@@ -1,19 +1,14 @@
-import { useState } from "react";
-import TodoForm from "../todos/TodoForm";
+import { todoSlice } from "../todos/todoSlice"
 
 
 
 export default function Home() {
 
-  const [users, setUsers] = useState([]);
 
+  console.log(todoSlice);
 
-  console.log(users);
   return (
     <div>
-
-      <TodoForm setUsers={setUsers} users={users} />
-
 
 
     </div>
