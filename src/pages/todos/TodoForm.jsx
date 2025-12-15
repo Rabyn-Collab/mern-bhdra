@@ -20,8 +20,11 @@ import {
 } from "@/components/ui/select"
 import { Textarea } from "../../components/ui/textarea"
 import * as Yup from "yup";
-import { useState } from "react"
 import { EyeIcon, EyeOffIcon } from "lucide-react"
+import { useDispatch } from "react-redux"
+import { addTodo } from "./todoSlice"
+import { useNavigate } from "react-router"
+import { nanoid } from "@reduxjs/toolkit"
 
 
 
@@ -49,8 +52,11 @@ const todoSchema = Yup.object({
 });
 
 
-export default function TodoForm({ setUsers, users }) {
-  const [show, setShow] = useState(false);
+export default function TodoForm() {
+
+  const dispatch = useDispatch();
+  const nav = useNavigate();
+
 
 
   return (
@@ -82,7 +88,13 @@ export default function TodoForm({ setUsers, users }) {
             }}
 
             onSubmit={(val) => {
-              setUsers([...users, val])
+
+              dispatch(addTodo({
+                ...val,
+                id: nanoid()
+              }));
+              nav(-1);
+
 
             }}
             validationSchema={todoSchema}

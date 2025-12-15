@@ -1,11 +1,14 @@
-import { todoSlice } from "../todos/todoSlice"
-
+import { useSelector } from "react-redux"
 
 
 export default function Home() {
 
 
-  console.log(todoSlice);
+  const { todos } = useSelector((state) => state.todoSlice);
+
+  console.log(todos);
+
+
 
   return (
     <div>
