@@ -17,7 +17,7 @@ export const todoSlice = createSlice({
       state.todos.push(action.payload);
       setTodosToLocal(state.todos);
     },
-
+    //
     removeTodo: (state, action) => {
       state.todos.splice(action.payload, 1);
       setTodosToLocal(state.todos);
