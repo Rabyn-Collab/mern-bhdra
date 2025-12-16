@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 import Header from "@/components/Header";
+import { Toaster } from "react-hot-toast";
 
 
 export const metadata: Metadata = {
@@ -21,7 +22,7 @@ export default function RootLayout({
         <main className="p-5">
           {children}
         </main>
-
+        <Toaster toastOptions={{ duration: 700 }} />
       </body>
     </html>
   );

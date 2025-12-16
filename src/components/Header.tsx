@@ -6,6 +6,7 @@ export default function Header() {
 
       <h1 className="text-xl font-bold">Logo</h1>
       <nav className="space-x-5">
+        <Link href={'/employees/add'}>Add Employee</Link>
         <Link href={'/posts'}>posts</Link>
         <Link href={'/about'}>about</Link>
         <Link href={'/contact'}>contact</Link>
