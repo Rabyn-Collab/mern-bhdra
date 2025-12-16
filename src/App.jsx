@@ -3,6 +3,7 @@ import Home from "./pages/home/Home";
 import NotFound from "./pages/not-found/NotFound";
 import RootLayout from "./components/RootLayout";
 import TodoForm from "./pages/todos/TodoForm";
+import EditForm from "./pages/todos/EditForm";
 
 export default function App() {
 
@@ -18,6 +19,10 @@ export default function App() {
         {
           path: 'add-todo',
           element: <TodoForm />
+        },
+        {
+          path: 'edit-todo/:id',
+          element: <EditForm />
         }
 
       ]

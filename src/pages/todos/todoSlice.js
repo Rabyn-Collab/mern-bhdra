@@ -16,7 +16,17 @@ export const todoSlice = createSlice({
     addTodo: (state, action) => {
       state.todos.push(action.payload);
       setTodosToLocal(state.todos);
-    }
+    },
+
+    removeTodo: (state, action) => {
+      state.todos.splice(action.payload, 1);
+      setTodosToLocal(state.todos);
+    },
+
+    updateTodo: (state, action) => {
+      state.todos = state.todos.map((todo) => todo.id === action.payload.id ? action.payload : todo);
+      setTodosToLocal(state.todos);
+    },
 
 
 
@@ -26,7 +36,7 @@ export const todoSlice = createSlice({
 });
 
 
-export const { addTodo } = todoSlice.actions;
+export const { addTodo, removeTodo, updateTodo } = todoSlice.actions;
 
 
 
