@@ -22,7 +22,7 @@ export default function RootLayout({
         <main className="p-5">
           {children}
         </main>
-        <Toaster toastOptions={{ duration: 700 }} />
+        <Toaster toastOptions={{ duration: 1000 }} />
       </body>
     </html>
   );

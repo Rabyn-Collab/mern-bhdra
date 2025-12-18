@@ -13,6 +13,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { addEmployee } from "@/lib/actions"
 
 import { Formik } from "formik";
+import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import toast from "react-hot-toast";
 
@@ -20,6 +21,7 @@ import toast from "react-hot-toast";
 export default function EmployeeAdd() {
 
   const [loading, startTransition] = useTransition();
+  const router = useRouter();
 
   return (
     <Card className="w-full max-w-sm">
@@ -43,12 +45,13 @@ export default function EmployeeAdd() {
             startTransition(async () => {
               try {
                 const response = await addEmployee(val);
-                console.log(response);
                 toast.success(response.message);
+                router.back();
               } catch (err) {
                 toast.error('Failed to add employee');
               }
             });
+
 
 
           }}
