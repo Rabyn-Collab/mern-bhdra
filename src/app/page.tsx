@@ -33,7 +33,7 @@ export default async function Home() {
       })}
 
 
-      <ChildComponet name="hello" age={12} />
+      {/* <ChildComponet name="hello" age={12} /> */}
 
 
     </div>

@@ -43,13 +43,15 @@ export default function EmployeeAdd() {
           onSubmit={(val) => {
 
             startTransition(async () => {
-              try {
-                const response = await addEmployee(val);
+
+              const response = await addEmployee(val);
+              if (response.success) {
                 toast.success(response.message);
                 router.back();
-              } catch (err) {
+              } else {
                 toast.error('Failed to add employee');
               }
+
             });
 
 

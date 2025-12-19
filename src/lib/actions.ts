@@ -17,10 +17,10 @@ export async function addEmployee(employee: Employee) {
 
 }
 
-export async function updateEmployee(employee: Employee, id: string) {
+export async function updateEmployee(employee: Employee) {
 
   try {
-    await axios.patch(`https://6943678a69b12460f31474d4.mockapi.io/employess/${id}`, employee);
+    await axios.patch(`https://6943678a69b12460f31474d4.mockapi.io/employess/${employee.id}`, employee);
     revalidatePath('/');
     return { success: true, message: 'Employee updated successfully' }
   } catch (err: any) {
@@ -35,9 +35,11 @@ export async function updateEmployee(employee: Employee, id: string) {
 export async function removeEmployee(id: string) {
   try {
     await axios.delete(`https://6943678a69b12460f31474d4.mockapi.io/employess/${id}`);
+    console.log('hello');
     revalidatePath('/');
     return { success: true, message: 'Employee removed successfully' }
   } catch (err: any) {
+    console.log('sello jee')
     return { success: false, message: err.message }
   }
 

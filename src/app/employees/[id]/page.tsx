@@ -1,3 +1,4 @@
+import EditForm from "@/components/EditForm";
 import axios from "axios";
 
 interface UpdatePageProps {
@@ -9,10 +10,12 @@ export default async function UpdatePage({ params }: { params: Promise<UpdatePag
 
   const res = await axios.get(`https://6943678a69b12460f31474d4.mockapi.io/employess/${id}`);
 
-  console.log(res.data);
+
 
   return (
     <div>
+
+      <EditForm employee={res.data} />
 
 
 
