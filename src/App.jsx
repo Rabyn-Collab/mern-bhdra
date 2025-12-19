@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router"
 import RootLayout from "./components/RootLayout";
+import Home from "./features/home/Home";
 
 
 export default function App() {
@@ -9,6 +10,10 @@ export default function App() {
       path: '/',
       element: <RootLayout />,
       children: [
+        {
+          index: true,
+          element: <Home />
+        }
 
       ]
     },

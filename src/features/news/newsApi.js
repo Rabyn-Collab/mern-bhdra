@@ -15,16 +15,16 @@ export const newsApi = createApi({
       query: () => ({
         url: '/news',
         method: 'GET',
-
       })
     }),
 
-
-
-
-
-
-
+    addNews: builder.mutation({
+      query: (body) => ({
+        url: '/news',
+        method: 'POST',
+        body
+      })
+    })
 
 
 
@@ -40,4 +40,4 @@ export const newsApi = createApi({
 });
 
 
-export const { useGetNewsQuery, useLazyGetNewsQuery } = newsApi;
+export const { useGetNewsQuery, useAddNewsMutation, useLazyGetNewsQuery } = newsApi;
