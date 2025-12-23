@@ -15,7 +15,16 @@ export const newsApi = createApi({
       query: () => ({
         url: '/news',
         method: 'GET',
-      })
+      }),
+      providesTags: ['news']
+    }),
+
+    getNewsDetail: builder.query({
+      query: (id) => ({
+        url: `/news/${id}`,
+        method: 'GET',
+      }),
+      providesTags: ['news']
     }),
 
     addNews: builder.mutation({
@@ -23,7 +32,25 @@ export const newsApi = createApi({
         url: '/news',
         method: 'POST',
         body
-      })
+      }),
+      invalidatesTags: ['news']
+    }),
+
+    updateNews: builder.mutation({
+      query: ({ id, body }) => ({
+        url: `/news/${id}`,
+        body,
+        method: 'PUT',
+      }),
+      invalidatesTags: ['news']
+    }),
+
+    removeNews: builder.mutation({
+      query: (id) => ({
+        url: `/news/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['news']
     })
 
 
@@ -40,4 +67,4 @@ export const newsApi = createApi({
 });
 
 
-export const { useGetNewsQuery, useAddNewsMutation, useLazyGetNewsQuery } = newsApi;
+export const { useGetNewsQuery, useAddNewsMutation, useLazyGetNewsQuery, useRemoveNewsMutation, useUpdateNewsMutation, useGetNewsDetailQuery } = newsApi;

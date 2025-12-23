@@ -5,7 +5,7 @@ export default function Header() {
     <div className="p-2 flex justify-between px-5 items-center">
 
       <h1 className="font-bold text-amber-600">App</h1>
-      <NavLink className="font-bold underline" to={'/add-todo'}>Add Todo</NavLink>
+      <NavLink className="font-bold underline" to={'/add-form'}>Add News</NavLink>
     </div>
   )
 }
