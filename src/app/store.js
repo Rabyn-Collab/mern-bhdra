@@ -1,18 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { newsApi } from "../features/news/newsApi";
-
+import { drinkApi } from "../features/drinks/drinkApi";
 
 
 
 export const store = configureStore({
   reducer: {
-    [newsApi.reducerPath]: newsApi.reducer
+    [drinkApi.reducerPath]: drinkApi.reducer
   },
 
 
   //caching, polling, invalidation
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([
-    newsApi.middleware
+    drinkApi.middleware
   ]),
 
 })

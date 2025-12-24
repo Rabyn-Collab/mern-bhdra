@@ -1,9 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router"
 import RootLayout from "./components/RootLayout";
 import Home from "./features/home/Home";
-import AddForm from "./features/news/AddForm";
-import EditPage from "./features/news/EditPage";
-
+import CocktailDrink from "./features/drinks/CocktailDrink";
 
 export default function App() {
 
@@ -17,14 +15,9 @@ export default function App() {
           element: <Home />
         },
         {
-          path: '/add-form',
-          element: <AddForm />
-        },
-        {
-          path: '/edit/:id',
-          element: <EditPage />
+          path: '/cocktail',
+          element: <CocktailDrink />
         }
-
       ]
     },
 

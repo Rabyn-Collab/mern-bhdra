@@ -1,12 +1,12 @@
 import { useGetDrinksByCategoryQuery } from "../drinks/drinkApi"
-import DrinkComponent from "../drinks/DrinkComponent";
+import DrinkComponent from "./DrinkComponent";
 
-export default function Home() {
-  const { isLoading, error, data } = useGetDrinksByCategoryQuery('Ordinary_Drink');
+export default function CocktailDrink() {
+  const { isLoading, error, data } = useGetDrinksByCategoryQuery('cocktail');
   if (isLoading) return <h1>Loading...</h1>
   if (error) return <p className="text-red-500">{error.data}</p>
 
-  console.log(data);
+
   return (
     <div className="p-5 grid grid-cols-4 gap-5">
 
@@ -15,6 +15,6 @@ export default function Home() {
       })}
 
 
-    </div >
+    </div>
   )
 }
