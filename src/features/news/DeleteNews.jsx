@@ -27,7 +27,7 @@ export default function DeleteNews({ id }) {
   }
   return (
     <AlertDialog>
-      <AlertDialogTrigger>
+      <AlertDialogTrigger asChild>
         {isLoading ? <Button disabled variant='ghost'>
           <Spinner />
         </Button> : <Button variant='ghost'>

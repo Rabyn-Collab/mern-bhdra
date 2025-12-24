@@ -12,10 +12,18 @@ export const newsApi = createApi({
 
 
     getNews: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: '/news',
         method: 'GET',
+        params
       }),
+      // transformResponse: (res) => {
+      //   return res.map((news) => ({
+      //     id: news.id,
+      //     title: news.title,
+      //     detail: news.detail
+      //   }));
+      // },
       providesTags: ['news']
     }),
 
