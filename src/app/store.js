@@ -13,5 +13,6 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([
     drinkApi.middleware
   ]),
+  devTools: true
 
 })

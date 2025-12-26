@@ -5,8 +5,10 @@ import { Skeleton } from '../../components/ui/skeleton';
 
 export default function Drink() {
   const { id } = useParams();
-  const { isLoading, error, data } = useGetDrinkDetailsQuery(id);
-  if (isLoading) return <div className='space-y-4 p-5'>
+  const { isLoading, error, data, isFetching } = useGetDrinkDetailsQuery(id, {
+    // pollingInterval: 1000,
+  });
+  if (isLoading || isFetching) return <div className='space-y-4 p-5'>
     <Skeleton className="h-4 w-[250px]" />
     <Skeleton className="h-[200px] w-[250px]" />
     <div className='space-y-2'>
