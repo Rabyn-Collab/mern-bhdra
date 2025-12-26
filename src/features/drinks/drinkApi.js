@@ -15,6 +15,17 @@ export const drinkApi = createApi({
         method: 'GET',
       }),
     }),
+    getDrinkDetails: builder.query({
+      query: (id) => ({
+        url: '/lookup.php',
+        params: {
+          i: id
+        },
+        method: 'GET',
+      }),
+    }),
+
+
 
 
 
@@ -23,6 +34,6 @@ export const drinkApi = createApi({
   }),
 });
 
-export const { useGetDrinksByCategoryQuery } = drinkApi;
+export const { useGetDrinksByCategoryQuery, useGetDrinkDetailsQuery } = drinkApi;
 
 

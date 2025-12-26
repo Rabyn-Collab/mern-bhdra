@@ -1,9 +1,10 @@
 import { useGetDrinksByCategoryQuery } from "../drinks/drinkApi"
 import DrinkComponent from "../drinks/DrinkComponent";
+import DrinkComponentSkeleton from "../drinks/DrinkComponentSkeleton";
 
 export default function Home() {
   const { isLoading, error, data } = useGetDrinksByCategoryQuery('Ordinary_Drink');
-  if (isLoading) return <h1>Loading...</h1>
+  if (isLoading) return <DrinkComponentSkeleton />
   if (error) return <p className="text-red-500">{error.data}</p>
 
   console.log(data);
