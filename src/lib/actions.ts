@@ -39,7 +39,6 @@ export async function removeEmployee(id: string) {
     revalidatePath('/');
     return { success: true, message: 'Employee removed successfully' }
   } catch (err: any) {
-    console.log('sello jee')
     return { success: false, message: err.message }
   }
 
