@@ -3,6 +3,7 @@ import RootLayout from "./components/RootLayout";
 import Home from "./features/home/Home";
 import CocktailDrink from "./features/drinks/CocktailDrink";
 import Drink from "./features/drinks/Drink";
+import Some from "./features/home/Some";
 
 export default function App() {
 
@@ -14,6 +15,10 @@ export default function App() {
         {
           index: true,
           element: <Home />
+        },
+        {
+          path: '/some',
+          element: <Some />
         },
         {
           path: '/cocktail',
