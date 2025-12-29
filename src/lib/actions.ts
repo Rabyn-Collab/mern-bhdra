@@ -1,51 +1,61 @@
 'use server';
-import { Employee } from "@/models/model";
-import axios from "axios";
+
+import { News } from "@/models/News";
+import { connectDb } from "./db";
+import { NewsModel } from "@/models/model";
 import { revalidatePath } from "next/cache";
 
 
-export async function addEmployee(employee: Employee) {
-
+export async function getNews() {
+  await connectDb();
   try {
-    await axios.post('https://6943678a69b12460f31474d4.mockapi.io/employess', employee);
-    revalidatePath('/');
-    return { success: true, message: 'Employee added successfully' }
-  } catch (err: any) {
-    return { success: false, message: err.message }
+    const news = await News.find({});
+    return { success: true, data: news };
+  } catch (err) {
+    return {
+      success: false,
+      message: 'Failed to get news'
+    }
   }
-
-
 }
 
-export async function updateEmployee(employee: Employee) {
-
+export async function addNews(news: NewsModel) {
+  await connectDb();
   try {
-    await axios.patch(`https://6943678a69b12460f31474d4.mockapi.io/employess/${employee.id}`, employee);
+    await News.create(news);
     revalidatePath('/');
-    return { success: true, message: 'Employee updated successfully' }
+    return {
+      success: true,
+      message: 'News added successfully'
+    }
   } catch (err: any) {
-    return { success: false, message: err.message }
+    return {
+      success: false,
+      message: err.message
+    }
   }
 
-
-}
-
-
-
-export async function removeEmployee(id: string) {
-  try {
-    await axios.delete(`https://6943678a69b12460f31474d4.mockapi.io/employess/${id}`);
-    console.log('hello');
-    revalidatePath('/');
-    return { success: true, message: 'Employee removed successfully' }
-  } catch (err: any) {
-    return { success: false, message: err.message }
-  }
 
 
 }
 
 
+export async function removeNews(id: string) {
+  await connectDb();
+  try {
+    await News.findByIdAndDelete(id);
+    revalidatePath('/');
+    return {
+      success: true,
+      message: 'News removed successfully'
+    }
+  } catch (err: any) {
+    return {
+      success: false,
+      message: err.message
+    }
+  }
 
 
 
+}

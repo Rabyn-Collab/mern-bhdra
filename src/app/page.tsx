@@ -1,55 +1,26 @@
-import DeleteEmployee from "@/components/DeleteEmployee";
-import { Button } from "@/components/ui/button";
-import { Employee } from "@/models/model";
-import axios from "axios"
-import { Edit2Icon } from "lucide-react";
-import Link from "next/link";
+import DeleteNews from "@/components/DeleteNews";
+import { getNews } from "@/lib/actions"
+import { NewsModel } from "@/models/model";
 
 export default async function Home() {
-  const res = await axios.get('https://6943678a69b12460f31474d4.mockapi.io/employess');
+  const res = await getNews();
 
-  const employees = res.data;
-
+  const news: NewsModel[] = res.data ?? [];
   return (
     <div>
 
-      {employees.map((employee: Employee) => {
-        return <div key={employee.id} className="border mb-5 p-4">
-          <h1>{employee.name}</h1>
-          <p>{employee.position}</p>
-          <p>{employee.age}</p>
-
-          <div className="mt-5 flex gap-5">
-            <Link href={`/employees/${employee.id}`}>
-              <Button variant={'ghost'}>
-                <Edit2Icon />
-              </Button>
-            </Link>
-
-            <DeleteEmployee id={employee.id ?? ''} />
-
+      {news.map((news: any) => {
+        return (
+          <div key={news.id} className="bg-white shadow-md rounded p-4 mb-4">
+            <h2 className="text-lg font-semibold">{news.title}</h2>
+            <p className="text-gray-600">{news.description}</p>
+            <DeleteNews id={news._id.toString()} />
           </div>
-        </div>
+        )
       })}
 
 
-      {/* <ChildComponet name="hello" age={12} /> */}
-
 
     </div>
-  )
-}
-
-interface ChildProps {
-  name: string;
-  age: number;
-}
-
-
-
-function ChildComponet({ name, age }: ChildProps) {
-
-  return (
-    <div>page</div>
   )
 }

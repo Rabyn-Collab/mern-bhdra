@@ -25,3 +25,9 @@ export interface Employee {
   position: string;
   age: number;
 }
+
+export interface NewsModel {
+  title: string;
+  description: string;
+  image: string;
+}

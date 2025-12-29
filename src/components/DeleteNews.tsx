@@ -1,0 +1,43 @@
+'use client';
+
+import { useTransition } from "react";
+import { Button } from "./ui/button";
+import { removeNews } from "@/lib/actions";
+import { Spinner } from "./ui/spinner";
+import toast from "react-hot-toast";
+
+interface DeleteNewsProps {
+  id: string;
+}
+
+export default function DeleteNews({ id }: { id: string }) {
+
+
+  const [isPending, startTransition] = useTransition();
+
+  const handleDelete = () => {
+    startTransition(async () => {
+      const res = await removeNews(id);
+      if (res.success) {
+        toast.success(res.message);
+      }
+    });
+
+  }
+
+
+  return (
+    <div className="mt-4">
+
+      <Button
+        onClick={handleDelete}
+        disabled={isPending}
+      >
+        {isPending && <Spinner />}
+        Delete</Button>
+
+
+
+    </div>
+  )
+}
