@@ -27,6 +27,7 @@ export interface Employee {
 }
 
 export interface NewsModel {
+  id?: string;
   title: string;
   description: string;
   image: string;

@@ -27,7 +27,7 @@ export default function DeleteNews({ id }: { id: string }) {
 
 
   return (
-    <div className="mt-4">
+    <div >
 
       <Button
         onClick={handleDelete}
