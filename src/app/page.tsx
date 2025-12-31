@@ -1,51 +1,23 @@
-import DeleteNews from "@/components/DeleteNews";
-import { Button } from "@/components/ui/button";
-import { getNews } from "@/lib/actions"
-import { NewsModel } from "@/models/model";
-import Link from "next/link";
+import axios from "axios"
 
 export default async function Home() {
 
-  const res = await getNews();
+  const res = await axios.get('https://dummyjson.com/products');
 
-  const news: NewsModel[] = res.data ?? [];
+  const products = res.data.products;
+
+
   return (
-    <div>
+    <div className="grid grid-cols-4 p-5 gap-5 max-lg:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1">
 
-      {news.map((news: any) => {
-        return (
-          <div key={news.id} className="bg-white shadow-md rounded p-4 mb-4">
-            <h2 className="text-lg font-semibold">{news.title}</h2>
-            <p className="text-gray-600">{news.description}</p>
+      {products.map((product: any) => (
+        <div key={product.id}>
+          <h1>{product.title}</h1>
+          <img src={product.thumbnail} alt="" />
+          <p>{product.description}</p>
+        </div>
+      ))}
 
-            <div className="flex gap-5 mt-5">
-              <Link href={`/news/${news._id}`}>
-                <Button>Update News</Button>
-              </Link>
-              <DeleteNews id={news._id.toString()} />
-            </div>
-
-          </div>
-        )
-      })}
-
-      <ChildComponent data={{ name: "John", age: 30 }} />
-
-
-    </div>
-  )
-}
-
-interface Data {
-  name: string,
-  age: number
-}
-
-
-function ChildComponent({ data }: { data: Data }) {
-  return (
-    <div>
-      <h1>Child Component</h1>
     </div>
   )
 }
