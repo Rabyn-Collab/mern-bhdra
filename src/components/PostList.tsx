@@ -5,6 +5,8 @@ import { db } from "@/utils/firebaseFirestore";
 import { collection, onSnapshot } from "@firebase/firestore";
 import { useEffect, useState } from "react";
 import DeletePost from "./DeletePost";
+import { Button } from "./ui/button";
+import Link from "next/link";
 
 export default function PostList() {
 
@@ -42,7 +44,15 @@ export default function PostList() {
           <img src={post.image} alt="" />
           <h1>{post.title}</h1>
           <p>{post.detail}</p>
-          <DeletePost id={post.id} />
+          <div className="flex gap-5 mt-4">
+            <Link href={`/posts/edit/${post.id}`}>
+              <Button className="bg-green-400">Edit</Button>
+            </Link>
+
+            <DeletePost id={post.id} />
+
+          </div>
+
           <hr />
         </div>
       ))}
