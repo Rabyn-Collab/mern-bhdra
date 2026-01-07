@@ -20,7 +20,10 @@
   },
   "homepage": "https://github.com/Rabyn-Collab/mern-bhdra#readme",
   "dependencies": {
+    "dotenv": "^17.2.3",
     "express": "^5.2.1",
-    "mongoose": "^9.1.1"
+    "express-joi-validation": "^6.1.0",
+    "joi": "^18.0.2",
+    "mongoose": "^9.1.2"
   }
 }
