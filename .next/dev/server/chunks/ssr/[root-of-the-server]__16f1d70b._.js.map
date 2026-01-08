@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 18, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/rabin/Desktop/mern-ashad-frontend/src/app/posts/edit/%5Bid%5D/page.tsx"],"sourcesContent":["interface EditProps {\r\n\r\n  id: string;\r\n\r\n}\r\n\r\n\r\nexport default async function EditPage({ params }: { params: Promise<EditProps> }) {\r\n\r\n  const { id } = await params;\r\n\r\n  console.log(id);\r\n  return (\r\n    <div>\r\n\r\n\r\n\r\n    </div>\r\n  )\r\n}\r\n"],"names":[],"mappings":";;;;;;AAOe,eAAe,SAAS,EAAE,MAAM,EAAkC;IAE/E,MAAM,EAAE,EAAE,EAAE,GAAG,MAAM;IAErB,QAAQ,GAAG,CAAC;IACZ,qBACE,8OAAC;;;;;AAML"}}]
+}

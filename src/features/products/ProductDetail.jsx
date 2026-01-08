@@ -3,8 +3,12 @@ import { useGetProductQuery } from "./productApi";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { base } from "../../app/mainApi";
 import AddToCart from "../carts/AddToCart";
+import ReviewForm from "../reviews/ReviewForm";
+import ReviewList from "../reviews/ReviewList";
+import { useSelector } from "react-redux";
 
 export default function ProductDetail() {
+  const { user } = useSelector((state) => state.userSlice);
   const { id } = useParams();
   const { isLoading, error, data } = useGetProductQuery(id);
   if (isLoading) return <DotLottieReact
@@ -17,21 +21,31 @@ export default function ProductDetail() {
 
 
   return (
-    <div className=" max-w-7xl mx-auto grid grid-cols-2 mt-11 gap-10">
-      <div>
-        <img src={`${base}/${data.product.image}`} alt="" />
-      </div>
-      <div className="space-y-4">
-        <h1>{data.product.title}</h1>
-        <p className="text-zinc-500">Price:- {data.product.price}</p>
-        <p className="text-zinc-500">Stock:- {data.product.stock}</p>
-        <p className="text-zinc-700">{data.product.detail}</p>
-        <hr />
+    <div>
+      <div className=" max-w-7xl mx-auto grid grid-cols-2 mt-11 gap-10">
         <div>
-          <AddToCart product={data.product} />
+          <img src={`${base}/${data.product.image}`} alt="" />
         </div>
-      </div>
+        <div className="space-y-4">
+          <h1>{data.product.title}</h1>
+          <p className="text-zinc-500">Price:- {data.product.price}</p>
+          <p className="text-zinc-500">Stock:- {data.product.stock}</p>
+          <p className="text-zinc-700">{data.product.detail}</p>
+          <hr />
+          <div>
+            <AddToCart product={data.product} />
+          </div>
+        </div>
 
+      </div>
+      <div className="p-5 mt-4">
+
+        {user && user.role === 'user' && <ReviewForm id={id} user={user} />}
+
+
+        <ReviewList />
+
+      </div>
 
 
 
