@@ -3,6 +3,7 @@ import productRoutes from './routes/productRoutes.js';
 import dotenv from 'dotenv';
 const app = express();
 import mongoose from 'mongoose';
+import fileUpload from 'express-fileupload';
 
 dotenv.config({ quiet: true });
 
@@ -17,7 +18,9 @@ mongoose.connect(process.env.DB_URL).then((val) => {
 });
 
 
-
+app.use(fileUpload({
+  limits: { fileSize: 5 * 1024 * 1024 },
+}));
 app.use(express.json());
 app.get('/', (req, res) => {
   return res.status(200).json({

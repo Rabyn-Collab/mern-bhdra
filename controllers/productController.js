@@ -16,7 +16,7 @@ export const getProduct = (req, res) => {
 
 
 export const createProduct = async (req, res) => {
-  const { title, detail, price, stock, image, category, brand } = req.body;
+  const { title, detail, price, stock, category, brand } = req.body;
   try {
 
     await Product.create({
@@ -24,7 +24,7 @@ export const createProduct = async (req, res) => {
       detail,
       price,
       stock,
-      image,
+      image: req.imagePath,
       category,
       brand
     });

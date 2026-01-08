@@ -10,7 +10,6 @@ export const productSchema = Joi.object({
   detail: Joi.string().required(),
   price: Joi.number().required(),
   stock: Joi.number().required(),
-  image: Joi.string().required(),
-  category: Joi.string().allow("men's clothing", "women's clothing", "jewelery", "electronics", "food").required(),
-  brand: Joi.string().required()
+  category: Joi.string().valid("men's clothing", "women's clothing", "jewelery", "electronics", "food").required(),
+  brand: Joi.string().valid("apple", "samsung", "nike", "adidas", "puma", "tanishq", "kfc").required()
 });
