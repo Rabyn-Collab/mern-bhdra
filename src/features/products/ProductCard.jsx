@@ -1,6 +1,7 @@
 import { Card, CardHeader, CardTitle, CardFooter, CardContent } from '@/components/ui/card'
 import { base } from '../../app/mainApi'
 import { useNavigate } from 'react-router'
+import StarRating from '../reviews/StarRating.jsx';
 
 
 export default function ProductCard({ product }) {
@@ -32,7 +33,13 @@ export default function ProductCard({ product }) {
         <CardFooter className='justify-between gap-3 max-sm:flex-col max-sm:items-stretch'>
           <div className='flex flex-col'>
             <span className='text-sm font-medium uppercase'>Price</span>
-            <span className='text-xl font-semibold'>Rs.{product.price}</span>
+
+            <div>
+              <span className='text-xl font-semibold'>Rs.{product.price}</span>
+              <StarRating value={product.rating} />
+
+            </div>
+
           </div>
 
         </CardFooter>

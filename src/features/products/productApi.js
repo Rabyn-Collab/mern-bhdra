@@ -5,6 +5,14 @@ const productApi = mainApi.injectEndpoints({
 
   endpoints: (builder) => ({
 
+    getTop5Product: builder.query({
+      query: () => ({
+        url: '/top-5',
+        method: 'GET'
+      }),
+      providesTags: ['Product']
+    }),
+
     getProduct: builder.query({
       query: (id) => ({
         url: `/products/${id}`,
@@ -55,10 +63,29 @@ const productApi = mainApi.injectEndpoints({
       }),
       invalidatesTags: ['Product']
     }),
+    addReview: builder.mutation({
+      query: (data) => ({
+        url: `/products/reviews/${data.id}`,
+        method: 'POST',
+        headers: {
+          Authorization: data.token
+        },
+        body: data.body
+      }),
+      invalidatesTags: ['Product']
+    }),
+
+    getReviews: builder.query({
+      query: (id) => ({
+        url: `/products/reviews/${id}`,
+        method: 'GET'
+      }),
+      providesTags: ['Product']
+    }),
 
 
   })
 });
 
 
-export const { useGetProductsQuery, useCreateProductMutation, useRemoveProductMutation, useGetProductQuery, useUpdateProductMutation } = productApi;
+export const { useGetProductsQuery, useCreateProductMutation, useRemoveProductMutation, useGetProductQuery, useUpdateProductMutation, useAddReviewMutation, useGetReviewsQuery, useGetTop5ProductQuery } = productApi;

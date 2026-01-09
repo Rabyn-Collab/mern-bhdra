@@ -3,12 +3,12 @@ import { Textarea } from "../../components/ui/textarea";
 import { Button } from "../../components/ui/button";
 import { Select } from "@radix-ui/react-select";
 import { SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
-import { useCreateReviewMutation } from "./reviewApi";
 import { Spinner } from "../../components/ui/spinner";
 import toast from "react-hot-toast";
+import { useAddReviewMutation } from "../products/productApi.js";
 
 export default function ReviewForm({ user, id }) {
-  const [createReview, { isLoading }] = useCreateReviewMutation();
+  const [createReview, { isLoading }] = useAddReviewMutation();
   return (
     <div>
 
@@ -25,9 +25,9 @@ export default function ReviewForm({ user, id }) {
           try {
 
             await createReview({
+              id,
               token: user.token,
               body: {
-                product: id,
                 comment: val.comment,
                 rating: Number(val.rating)
               }
@@ -36,7 +36,6 @@ export default function ReviewForm({ user, id }) {
             toast.success('Review added successfully');
 
           } catch (err) {
-            console.log(err);
             toast.error(err.data.message);
 
           }

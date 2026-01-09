@@ -6,6 +6,7 @@ import AddToCart from "../carts/AddToCart";
 import ReviewForm from "../reviews/ReviewForm";
 import ReviewList from "../reviews/ReviewList";
 import { useSelector } from "react-redux";
+import StarRating from "../reviews/StarRating.jsx";
 
 export default function ProductDetail() {
   const { user } = useSelector((state) => state.userSlice);
@@ -28,6 +29,7 @@ export default function ProductDetail() {
         </div>
         <div className="space-y-4">
           <h1>{data.product.title}</h1>
+          <StarRating value={data.product.rating} />
           <p className="text-zinc-500">Price:- {data.product.price}</p>
           <p className="text-zinc-500">Stock:- {data.product.stock}</p>
           <p className="text-zinc-700">{data.product.detail}</p>
@@ -43,7 +45,7 @@ export default function ProductDetail() {
         {user && user.role === 'user' && <ReviewForm id={id} user={user} />}
 
 
-        <ReviewList />
+        <ReviewList id={id} />
 
       </div>
 

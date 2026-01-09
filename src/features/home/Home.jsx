@@ -6,6 +6,7 @@ import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { useSearchParams } from "react-router";
 import { useEffect } from "react";
+import Top5Product from "./Top5Product.jsx";
 
 export default function Home() {
   const [params, setPrams] = useSearchParams();
@@ -48,6 +49,7 @@ export default function Home() {
 
       <main className="grow">
         <h1>Welcome To Shop Online</h1>
+        <Top5Product />
 
         <Formik
           initialValues={{
