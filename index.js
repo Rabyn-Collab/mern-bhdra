@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
 
 });
 
-app.use(productRoutes);
+app.use('/api/products', productRoutes);
 
 
 

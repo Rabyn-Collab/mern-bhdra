@@ -1,17 +1,32 @@
 import Product from "../models/Product.js"
+import fs from "fs";
 
 
+export const getProducts = async (req, res) => {
+  try {
+    const products = await Product.find({});
 
-export const getProducts = (req, res) => {
-  return res.status(200).json({
-    message: "List of products"
-  })
+    return res.status(200).json(products);
+  } catch (err) {
+    return res.status(400).json({
+      message: err.message
+    })
+
+  }
 }
 
-export const getProduct = (req, res) => {
-  return res.status(200).json({
-    message: "Product details"
-  })
+export const getProduct = async (req, res) => {
+  try {
+    const product = await Product.findById(req.productId);
+    if (!product) return res.status(404).json({ message: "Product not found" });
+    return res.status(200).json(product);
+
+  } catch (err) {
+    return res.status(400).json({
+      message: err.message
+    })
+
+  }
 }
 
 
@@ -42,17 +57,57 @@ export const createProduct = async (req, res) => {
 }
 
 
-export const updateProduct = (req, res) => {
-  return res.status(200).json({
-    message: "Product updated"
-  })
+export const updateProduct = async (req, res) => {
+  const { title, detail, price, stock, category, brand } = req.body || {};
+  try {
+
+    const isExist = await Product.findById(req.productId);
+    if (!isExist) return res.status(404).json({ message: "Product not found" });
+    isExist.title = title || isExist.title;
+    isExist.detail = detail || isExist.detail;
+    isExist.price = price || isExist.price;
+    isExist.stock = stock || isExist.stock;
+    isExist.category = category || isExist.category;
+    isExist.brand = brand || isExist.brand;
+
+    if (req.imagePath) {
+      fs.unlink(`./uploads/${isExist.image}`, async (err) => {
+        if (err) return res.status(500).json({ message: "Something went wrong" });
+        isExist.image = req.imagePath;
+        await isExist.save();
+        return res.status(200).json({ message: "Product updated" });
+      });
+    } else {
+      await isExist.save();
+      return res.status(200).json({ message: "Product updated" });
+    }
+
+
+  } catch (err) {
+
+  }
 }
 
 
-export const deleteProduct = (req, res) => {
-  return res.status(200).json({
-    message: "Product deleted"
-  })
+export const deleteProduct = async (req, res) => {
+  try {
+
+    const isExist = await Product.findById(req.productId);
+    if (!isExist) return res.status(404).json({ message: "Product not found" });
+
+    fs.unlink(`./uploads/${isExist.image}`, async (err) => {
+      if (err) return res.status(500).json({ message: "Something went wrong" });
+      await isExist.deleteOne();
+      return res.status(200).json({ message: "Product deleted" });
+    });
+
+
+  } catch (err) {
+    return res.status(400).json({
+      message: err.message
+    })
+
+  }
 }
 
 
