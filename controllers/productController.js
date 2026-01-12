@@ -71,12 +71,24 @@ export const updateProduct = async (req, res) => {
     isExist.brand = brand || isExist.brand;
 
     if (req.imagePath) {
-      fs.unlink(`./uploads/${isExist.image}`, async (err) => {
-        if (err) return res.status(500).json({ message: "Something went wrong" });
-        isExist.image = req.imagePath;
-        await isExist.save();
-        return res.status(200).json({ message: "Product updated" });
-      });
+
+      isExist.image.forEach((item) => {
+        fs.unlink(`./uploads/${item}`, async (err) => {
+          if (err) return res.status(500).json({ message: "Something went wrong" });
+
+        });
+      })
+
+      isExist.image = req.imagePath;
+      await isExist.save();
+      return res.status(200).json({ message: "Product updated" });
+
+      // fs.unlink(`./uploads/${isExist.image}`, async (err) => {
+      //   if (err) return res.status(500).json({ message: "Something went wrong" });
+      //   isExist.image = req.imagePath;
+      //   await isExist.save();
+      //   return res.status(200).json({ message: "Product updated" });
+      // });
     } else {
       await isExist.save();
       return res.status(200).json({ message: "Product updated" });
