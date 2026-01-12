@@ -1,5 +1,6 @@
 import express from 'express';
-import productRoutes from './routes/productRoutes.js';
+import postRoutes from './routes/postRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 import dotenv from 'dotenv';
 const app = express();
 import mongoose from 'mongoose';
@@ -29,7 +30,8 @@ app.get('/', (req, res) => {
 
 });
 
-app.use('/api/products', productRoutes);
+app.use('/api/posts', postRoutes);
+app.use('/api/users', userRoutes);
 
 
 

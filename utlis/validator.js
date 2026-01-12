@@ -1,15 +1,43 @@
-import validation from 'express-joi-validation';
-import Joi from 'joi';
+import joi from "joi";
+import validate from "express-joi-validation";
+
+
+export const validators = validate.createValidator({});
 
 
 
-export const validator = validation.createValidator({});
-
-export const productSchema = Joi.object({
-  title: Joi.string().min(3).max(100).required(),
-  detail: Joi.string().required(),
-  price: Joi.number().required(),
-  stock: Joi.number().required(),
-  category: Joi.string().valid("men's clothing", "women's clothing", "jewelery", "electronics", "food").required(),
-  brand: Joi.string().valid("apple", "samsung", "nike", "adidas", "puma", "tanishq", "kfc").required()
+export const postSchema = joi.object({
+  content: joi.string().required(),
 });
+
+
+export const registerSchema = joi.object({
+  email: joi.string().email().required(),
+  password: joi.string().required(),
+  username: joi.string().required(),
+  bio: joi.string().required(),
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
