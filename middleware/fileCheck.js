@@ -2,7 +2,7 @@ import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
 
-const supportedFormats = ['.jpg', '.png', '.jpeg', '.gif', '.webp'];
+export const supportedFormats = ['.jpg', '.png', '.jpeg', '.gif', '.webp'];
 
 export const fileCheck = (req, res, next) => {
 

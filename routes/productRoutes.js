@@ -1,6 +1,6 @@
 import express from 'express';
 import { createProduct, deleteProduct, getProduct, getProducts, updateProduct } from '../controllers/productController.js';
-import { productSchema, validator } from '../utlis/validator.js';
+import { productSchema, validators } from '../utlis/validator.js';
 import { fileCheck, updateFileCheck } from '../middleware/fileCheck.js';
 import mongoose from 'mongoose';
 import { notAllowed } from '../utlis/notAllowed.js';
@@ -15,7 +15,7 @@ router.param('id', (req, res, next, id) => {
   next();
 });
 
-router.route('/').get(getProducts).post(validator.body(productSchema), fileCheck, createProduct).all(notAllowed);
+router.route('/').get(getProducts).post(validators.body(productSchema), fileCheck, createProduct).all(notAllowed);
 
 
 router.route('/:id').get(getProduct).patch(updateFileCheck, updateProduct).delete(deleteProduct).all(notAllowed);
