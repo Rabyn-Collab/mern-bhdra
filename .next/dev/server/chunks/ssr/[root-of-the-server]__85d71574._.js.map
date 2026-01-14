@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 94, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/rabin/Desktop/mern-ashad-frontend/src/components/PostList.tsx"],"sourcesContent":["'use client';\r\n\r\nimport { Post } from \"@/models/post.js\";\r\nimport { db } from \"@/utils/firebaseFirestore.js\";\r\nimport { collection, onSnapshot } from \"@firebase/firestore\";\r\nimport { useEffect, useState } from \"react\";\r\n\r\nexport default function PostList() {\r\n\r\n  const [posts, setPosts] = useState<Post[]>([]);\r\n\r\n\r\n\r\n  useEffect(() => {\r\n\r\n    const subs = onSnapshot(collection(db, 'posts'), (snapshot) => {\r\n\r\n      const posts = snapshot.docs.map((doc) => {\r\n        return {\r\n          id: doc.id,\r\n          ...doc.data()\r\n        }\r\n      });\r\n      console.log(posts);\r\n\r\n    });\r\n\r\n  }, []);\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n  return (\r\n    <div>\r\n\r\n\r\n\r\n\r\n    </div>\r\n  )\r\n}\r\n"],"names":[],"mappings":";;;;;;;;;;AAIA;AACA;AALA;;;;;AAOe,SAAS;IAEtB,MAAM,CAAC,OAAO,SAAS,GAAG,IAAA,iNAAQ,EAAS,EAAE;IAI7C,IAAA,kNAAS,EAAC;QAER,MAAM,OAAO,IAAA,+KAAU,EAAC,IAAA,+KAAU,EAAC,IAAI,UAAU,CAAC;YAEhD,MAAM,QAAQ,SAAS,IAAI,CAAC,GAAG,CAAC,CAAC;gBAC/B,OAAO;oBACL,IAAI,IAAI,EAAE;oBACV,GAAG,IAAI,IAAI,EAAE;gBACf;YACF;YACA,QAAQ,GAAG,CAAC;QAEd;IAEF,GAAG,EAAE;IAQL,qBACE,8OAAC;;;;;AAOL"}}]
-}
