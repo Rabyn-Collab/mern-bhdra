@@ -3,5 +3,26 @@
     "express": "^5.2.1",
     "express-joi-validation": "^6.1.0",
     "joi": "^18.0.2"
-  }
+  },
+  "name": "mern-ashad-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rabyn-Collab/mern-bhdra.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Rabyn-Collab/mern-bhdra/issues"
+  },
+  "homepage": "https://github.com/Rabyn-Collab/mern-bhdra#readme"
 }
