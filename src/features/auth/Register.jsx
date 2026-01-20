@@ -10,10 +10,32 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useNavigate } from "react-router"
+import { Formik } from "formik"
+import { EyeIcon, EyeOffIcon } from "lucide-react"
+import { useState } from "react"
+import { useLocation, useNavigate } from "react-router"
+import * as Yup from "yup"
+
+
+const registerScema = Yup.object({
+  username: Yup.string().min(4).max(50).required("Username is required"),
+  email: Yup.string().email().required("Email is required"),
+  password: Yup.string().min(4).max(50).required("Password is required"),
+  image: Yup.mixed().test(
+    'fileType',
+    'Unsupported File Format',
+    (value) => value && ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'].includes(value.type)
+  ).required("Image is required"),
+})
 
 export default function Register() {
   const nav = useNavigate();
+
+  const [show, setShow] = useState(false);
+  const handleShow = () => {
+
+    setShow(!show)
+  };
   return (
     <div>
       <Card className="w-full max-w-sm">
@@ -23,54 +45,133 @@ export default function Register() {
             Enter your email below to register to your account
           </CardDescription>
           <CardAction>
-            <Button onClick={() => nav(-1)} variant="link">Login</Button>
+            <Button onClick={() => nav('/login')} variant="link">Login</Button>
           </CardAction>
         </CardHeader>
         <CardContent>
-          <form>
-            <div className="flex flex-col gap-6">
+
+          <Formik
+
+            initialValues={{
+              username: '',
+              email: '',
+              password: '',
+              image: '',
+              imagePreview: ''
+            }}
+
+            onSubmit={(val) => {
+
+            }}
+
+            validationSchema={registerScema}
+          >
 
 
-              <div className="grid gap-2">
-                <Label htmlFor="username">Username</Label>
-                <Input
-                  id="username"
-                  type="text"
-                  placeholder="John Doe"
-
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-
-                />
-              </div>
+            {({ handleChange, handleSubmit, values, touched, errors, setFieldValue }) => (
+              <form onSubmit={handleSubmit}>
+                <div className="flex flex-col gap-6">
 
 
+                  <div className="grid gap-2">
+                    <Label htmlFor="username">Username</Label>
+                    <Input
+                      name='username'
+                      onChange={handleChange}
+                      value={values.username}
+                      id="username"
+                      type="text"
+                      placeholder="John Doe"
 
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
+                    />
+                    {touched.username && errors.username && <p className="text-red-500">{errors.username}</p>}
+                  </div>
+
+                  <div className="grid gap-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      onChange={handleChange}
+                      value={values.email}
+                      name='email'
+                      placeholder="m@example.com"
+
+                    />
+                    {touched.email && errors.email && <p className="text-red-500">{errors.email}</p>}
+                  </div>
+
+
+
+                  <div className="grid gap-2">
+
+                    <div className="flex items-center">
+                      <Label htmlFor="password">Password</Label>
+
+                    </div>
+
+                    <div className="relative">
+
+                      <Input
+                        name='password'
+                        onChange={handleChange}
+                        value={values.password}
+                        id="password" type={show ? 'text' : 'password'} placeholder="********" />
+                      {touched.password && errors.password && <p className="text-red-500">{errors.password}</p>}
+
+                      <Button
+                        type='button'
+                        variant='ghost'
+                        size='icon'
+                        onClick={handleShow}
+                        className=" absolute inset-y-0 right-0">
+                        {show ? <EyeOffIcon /> : <EyeIcon />}
+
+                      </Button>
+
+                    </div>
+
+                  </div>
+
+
+                  <div className="grid gap-2">
+
+                    <div className="flex items-center">
+                      <Label htmlFor="image">Upload an image</Label>
+                    </div>
+                    <Input
+                      name='image'
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        setFieldValue('imagePreview', URL.createObjectURL(file));
+
+                        setFieldValue('image', file);
+
+                      }}
+
+
+                      id="image" type="file" />
+                    {touched.image && errors.image && <p className="text-red-500">{errors.image}</p>}
+                    {values.imagePreview && !errors.image && <img src={values.imagePreview} alt="" />}
+
+
+                  </div>
+
 
                 </div>
-                <Input id="password" type="password" placeholder="********" />
-              </div>
+
+                <Button type="submit" className="w-full mt-6">
+                  Submit
+                </Button>
+              </form>
+
+            )}
 
 
-            </div>
-          </form>
+          </Formik>
+
         </CardContent>
-        <CardFooter className="flex-col gap-2">
-          <Button type="submit" className="w-full">
-            Login
-          </Button>
 
-        </CardFooter>
       </Card>
     </div>
   )
