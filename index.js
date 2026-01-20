@@ -6,6 +6,7 @@ const app = express();
 import mongoose from 'mongoose';
 import fileUpload from 'express-fileupload';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 dotenv.config({ quiet: true });
 
@@ -19,6 +20,7 @@ mongoose.connect(process.env.DB_URL).then((val) => {
   console.log(err);
 });
 
+app.use(cors());
 app.use(cookieParser());
 app.use(fileUpload({
   limits: { fileSize: 5 * 1024 * 1024 },
