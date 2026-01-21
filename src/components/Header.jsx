@@ -2,8 +2,10 @@ import { LucideShoppingBag } from "lucide-react";
 import DropdownMenuButton from "./DropDownMenuButton.jsx";
 import { Button } from "./ui/button.jsx";
 import { NavLink } from "react-router";
+import { useSelector } from "react-redux";
 
 export default function Header() {
+  const { user } = useSelector((state) => state.userSlice);
   return (
     <div className="flex items-center bg-black  text-white px-10 py-3 justify-between">
 
@@ -15,7 +17,9 @@ export default function Header() {
       </div>
 
       <div>
-        <div className="flex gap-3">
+
+
+        {user ? <DropdownMenuButton user={user} /> : <div className="flex gap-3">
           <NavLink to="/login">
             <Button variant="text">Login</Button>
           </NavLink>
@@ -26,9 +30,10 @@ export default function Header() {
 
 
 
-        </div>
+        </div>}
 
-        {/* <DropdownMenuButton /> */}
+
+
       </div>
 
 

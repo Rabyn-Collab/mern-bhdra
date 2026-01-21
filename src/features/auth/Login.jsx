@@ -15,13 +15,18 @@ import { useState } from "react"
 import { useNavigate } from "react-router"
 import * as Yup from "yup"
 import { useLoginUserMutation } from "./authApi.js"
+import { toast } from "sonner"
+import { useDispatch } from "react-redux"
+import { setUser } from "../user/userSlice.js"
+import { Spinner } from "../../components/ui/spinner.jsx"
 
 const loginSchema = Yup.object({
   email: Yup.string().email("Invalid email").required("Email is required"),
-  password: Yup.string().required("Password is required"),
+  password: Yup.string().min(8).max(50).required("Password is required"),
 })
 
 export default function Login() {
+  const dispatch = useDispatch();
 
   const [loginUser, { isLoading }] = useLoginUserMutation();
   const nav = useNavigate();
@@ -52,7 +57,11 @@ export default function Login() {
           validationSchema={loginSchema}
           onSubmit={async (val) => {
             try {
-              await loginUser(val).unwrap();
+              const response = await loginUser(val).unwrap();
+              toast.success('Login Successfully');
+
+              dispatch(setUser(response));
+
             } catch (err) {
               console.log(err);
 
@@ -106,8 +115,8 @@ export default function Login() {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full mt-6">
-                Login
+              <Button disabled={isLoading} type="submit" className="w-full mt-6">
+                {isLoading ? <Spinner /> : 'Login'}
               </Button>
             </form>
           )}

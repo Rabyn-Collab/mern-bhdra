@@ -9,6 +9,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
+import { useGetUserQuery } from '../features/user/userApi.js'
+import { base } from '../app/mainApi.js'
 
 const listItems = [
   {
@@ -33,12 +35,20 @@ const listItems = [
   }
 ]
 
-const DropdownMenuButton = () => {
+const DropdownMenuButton = ({ user }) => {
+  const { isLoading, error, data } = useGetUserQuery(user.token);
+  if (isLoading) return <Button variant='secondary' size='icon' className='overflow-hidden rounded-full'>
+
+  </Button>
+  if (error) return <p className='text-red-500'>{error.data.message}</p>;
+
+
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant='secondary' size='icon' className='overflow-hidden rounded-full'>
-          <img src='https://cdn.shadcnstudio.com/ss-assets/avatar/avatar-5.png' alt='Hallie Richards' />
+          <img src={`${base}/${data.image}`} alt='Hallie Richards' />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-56'>
