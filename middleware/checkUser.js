@@ -3,14 +3,24 @@ import jwt from 'jsonwebtoken';
 
 
 export const checkUser = (req, res, next) => {
-  const token = req.cookies?.token;
-  // if (!token) return res.status(401).json({ message: "Unauthorized" });
-  // const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+  const token = req.headers.authorization;
+  if (!token) return res.status(401).json({ message: "Unauthorized" });
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.userId = decoded.id;
+    req.role = decoded.role;
+    return next();
+  } catch (err) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
 
 
-  // console.log(decoded);
 
-  next();
+
+
+
+
 
 
 }

@@ -21,7 +21,7 @@ export const loginUser = async (req, res) => {
 
     // res.cookie('token', token, {
     //   httpOnly: true,
-    //   maxAge: 2000
+    //   // maxAge: 2000
     // });
 
     return res.status(200).json({
@@ -69,3 +69,20 @@ export const registerUser = async (req, res) => {
   }
 
 };
+
+
+export const getUserProfile = async (req, res) => {
+
+  try {
+
+    const user = await User.findById(req.userId).select('-password');
+    if (!user) return res.status(404).json({ message: "User not found" });
+    return res.status(200).json(user);
+
+  } catch (err) {
+    return res.status(400).json({
+      message: err.message
+    })
+  }
+
+}
