@@ -11,6 +11,9 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useGetUserQuery } from '../features/user/userApi.js'
 import { base } from '../app/mainApi.js'
+import { useDispatch } from 'react-redux'
+import { removeUser } from '../features/user/userSlice.js'
+import { useNavigate } from 'react-router'
 
 const listItems = [
   {
@@ -36,11 +39,13 @@ const listItems = [
 ]
 
 const DropdownMenuButton = ({ user }) => {
+  const dispactch = useDispatch();
+  const nav = useNavigate();
   const { isLoading, error, data } = useGetUserQuery(user.token);
   if (isLoading) return <Button variant='secondary' size='icon' className='overflow-hidden rounded-full'>
 
   </Button>
-  if (error) return <p className='text-red-500'>{error.data.message}</p>;
+  if (error) return <p className='text-red-500'>{error.data?.message}</p>;
 
 
 
@@ -54,12 +59,34 @@ const DropdownMenuButton = ({ user }) => {
       <DropdownMenuContent className='w-56'>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuGroup>
-          {listItems.map((item, index) => (
-            <DropdownMenuItem key={index}>
+          {listItems.map((item, index) => {
+
+
+            return <DropdownMenuItem
+              onClick={() => {
+                switch (item.property) {
+
+                  case 'Sign Out':
+                    dispactch(removeUser());
+                    break;
+
+                  case 'Profile':
+                    nav('/profile');
+                    break;
+
+
+                }
+              }}
+
+              key={index}>
               <item.icon />
               <span className='text-popover-foreground'>{item.property}</span>
             </DropdownMenuItem>
-          ))}
+          }
+
+
+
+          )}
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

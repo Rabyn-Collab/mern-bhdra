@@ -4,28 +4,26 @@ import {
   CardAction,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Formik } from "formik"
-import { EyeIcon, EyeOffIcon } from "lucide-react"
-import { useState } from "react"
-import { useLocation, useNavigate } from "react-router"
 import * as Yup from "yup"
-import { useRegisterUserMutation } from "./authApi.js"
 import { Spinner } from "../../components/ui/spinner.jsx"
 import { toast } from "sonner"
 import { Textarea } from "../../components/ui/textarea.jsx"
+import { useNavigate } from "react-router"
+import { useSelector } from "react-redux"
+import { useGetUserQuery } from "./userApi.js"
+import { base } from "../../app/mainApi.js"
 
 
 const registerScema = Yup.object({
   username: Yup.string().min(4).max(50).required("Username is required"),
   email: Yup.string().email().required("Email is required"),
   bio: Yup.string().min(10).max(200).required("Bio is required"),
-  password: Yup.string().min(4).max(50).required("Password is required"),
   image: Yup.mixed().test(
     'fileType',
     'Unsupported File Format',
@@ -33,57 +31,44 @@ const registerScema = Yup.object({
   ).required("Image is required"),
 })
 
-export default function Register() {
+export default function UserProfile() {
   const nav = useNavigate();
-  const [registerUser, { isLoading }] = useRegisterUserMutation();
-  const [show, setShow] = useState(false);
-  const handleShow = () => {
+  const { user } = useSelector((state) => state.userSlice);
 
-    setShow(!show)
-  };
+  const { isLoading, data, error } = useGetUserQuery(user.token);
+
+  if (isLoading) return <div className="flex gap-4 items-center">
+    <h3>Loading...</h3>
+    <Spinner />
+  </div>
+
+  if (error) return <p className='text-red-500'>{error.data?.message}</p>;
+
   return (
     <div>
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle>Register to your account</CardTitle>
+          <CardTitle>Update  your account</CardTitle>
           <CardDescription>
-            Enter your email below to register to your account
+            Enter your details below to update  your account
           </CardDescription>
-          <CardAction>
-            <Button onClick={() => nav('/login')} variant="link">Login</Button>
-          </CardAction>
+
         </CardHeader>
         <CardContent>
 
           <Formik
 
             initialValues={{
-              username: '',
-              email: '',
-              bio: '',
-              password: '',
+              username: data.username,
+              email: data.email,
+              bio: data.bio,
+
               image: '',
-              imagePreview: ''
+              imagePreview: data.imagePreview
             }}
 
             onSubmit={async (val) => {
-              const formData = new FormData();
-              formData.append('username', val.username);
-              formData.append('email', val.email);
-              formData.append('password', val.password);
-              formData.append('image', val.image);
-              formData.append('bio', val.bio);
-              try {
 
-                await registerUser(formData).unwrap();
-                toast.success('User registered successfully');
-                nav('/login');
-
-              } catch (err) {
-                console.log(err);
-                toast.error(err.data.message || err.data);
-
-              }
 
             }}
 
@@ -140,35 +125,7 @@ export default function Register() {
 
 
 
-                  <div className="grid gap-2">
 
-                    <div className="flex items-center">
-                      <Label htmlFor="password">Password</Label>
-
-                    </div>
-
-                    <div className="relative">
-
-                      <Input
-                        name='password'
-                        onChange={handleChange}
-                        value={values.password}
-                        id="password" type={show ? 'text' : 'password'} placeholder="********" />
-                      {touched.password && errors.password && <p className="text-red-500">{errors.password}</p>}
-
-                      <Button
-                        type='button'
-                        variant='ghost'
-                        size='icon'
-                        onClick={handleShow}
-                        className=" absolute inset-y-0 right-0">
-                        {show ? <EyeOffIcon /> : <EyeIcon />}
-
-                      </Button>
-
-                    </div>
-
-                  </div>
 
 
                   <div className="grid gap-2">
@@ -189,7 +146,7 @@ export default function Register() {
 
                       id="image" type="file" />
                     {touched.image && errors.image && <p className="text-red-500">{errors.image}</p>}
-                    {values.imagePreview && !errors.image && <img src={values.imagePreview} alt="" />}
+                    {values.imagePreview && !errors.image && <img src={`${base}/${values.imagePreview}`} alt="" />}
 
 
                   </div>
@@ -197,12 +154,12 @@ export default function Register() {
 
                 </div>
 
-                <Button
+                {/* <Button
                   disabled={isLoading}
                   type="submit" className="w-full mt-6">
                   {isLoading ? <Spinner /> : 'Sign Up'}
 
-                </Button>
+                </Button> */}
               </form>
 
             )}
