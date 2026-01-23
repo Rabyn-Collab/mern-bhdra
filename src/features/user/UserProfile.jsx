@@ -16,7 +16,7 @@ import { toast } from "sonner"
 import { Textarea } from "../../components/ui/textarea.jsx"
 import { useNavigate } from "react-router"
 import { useSelector } from "react-redux"
-import { useGetUserQuery } from "./userApi.js"
+import { useGetUserQuery, useUpdateUserMutation } from "./userApi.js"
 import { base } from "../../app/mainApi.js"
 
 
@@ -27,8 +27,13 @@ const registerScema = Yup.object({
   image: Yup.mixed().test(
     'fileType',
     'Unsupported File Format',
-    (value) => value && ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'].includes(value.type)
-  ).required("Image is required"),
+    (value) => {
+      if (value) {
+        return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type)
+      }
+      return true
+    }
+  ),
 })
 
 export default function UserProfile() {
@@ -36,6 +41,7 @@ export default function UserProfile() {
   const { user } = useSelector((state) => state.userSlice);
 
   const { isLoading, data, error } = useGetUserQuery(user.token);
+  const [updateProfile, { isLoading: isLoad }] = useUpdateUserMutation();
 
   if (isLoading) return <div className="flex gap-4 items-center">
     <h3>Loading...</h3>
@@ -43,6 +49,8 @@ export default function UserProfile() {
   </div>
 
   if (error) return <p className='text-red-500'>{error.data?.message}</p>;
+
+
 
   return (
     <div>
@@ -62,12 +70,35 @@ export default function UserProfile() {
               username: data.username,
               email: data.email,
               bio: data.bio,
-
               image: '',
-              imagePreview: data.imagePreview
+              imagePreview: data.image
             }}
 
             onSubmit={async (val) => {
+              const formData = new FormData();
+
+              formData.append('username', val.username);
+              formData.append('email', val.email);
+              formData.append('bio', val.bio);
+
+              try {
+
+                if (val.image) {
+                  formData.append('image', val.image);
+                }
+
+                await updateProfile({
+                  body: formData,
+                  token: user.token
+                }).unwrap();
+                toast.success('Profile updated successfully');
+                nav(-1);
+
+
+              } catch (err) {
+                toast.error(err.data.message);
+
+              }
 
 
             }}
@@ -146,7 +177,9 @@ export default function UserProfile() {
 
                       id="image" type="file" />
                     {touched.image && errors.image && <p className="text-red-500">{errors.image}</p>}
-                    {values.imagePreview && !errors.image && <img src={`${base}/${values.imagePreview}`} alt="" />}
+
+
+                    {values.imagePreview && !errors.image && <img src={values.image ? values.imagePreview : `${base}/${values.imagePreview}`} alt="" />}
 
 
                   </div>
@@ -154,12 +187,12 @@ export default function UserProfile() {
 
                 </div>
 
-                {/* <Button
-                  disabled={isLoading}
+                <Button
+                  disabled={isLoad}
                   type="submit" className="w-full mt-6">
-                  {isLoading ? <Spinner /> : 'Sign Up'}
+                  {isLoad ? <Spinner /> : 'Sign Up'}
 
-                </Button> */}
+                </Button>
               </form>
 
             )}

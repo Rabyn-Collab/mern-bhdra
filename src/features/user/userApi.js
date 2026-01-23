@@ -15,7 +15,8 @@ const userApi = mainApi.injectEndpoints({
         headers: {
           Authorization: token
         }
-      })
+      }),
+      providesTags: ['User']
     }),
     updateUser: builder.mutation({
       query: (data) => ({
@@ -25,7 +26,8 @@ const userApi = mainApi.injectEndpoints({
         headers: {
           Authorization: data.token
         }
-      })
+      }),
+      invalidatesTags: ['User']
     })
 
 

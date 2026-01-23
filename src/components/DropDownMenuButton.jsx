@@ -1,4 +1,4 @@
-import { UserIcon, SettingsIcon, BellIcon, LogOutIcon, CreditCardIcon } from 'lucide-react'
+import { UserIcon, BellIcon, LogOutIcon, LayoutDashboard, } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -15,19 +15,12 @@ import { useDispatch } from 'react-redux'
 import { removeUser } from '../features/user/userSlice.js'
 import { useNavigate } from 'react-router'
 
-const listItems = [
+const userlistItems = [
   {
     icon: UserIcon,
     property: 'Profile'
   },
-  {
-    icon: SettingsIcon,
-    property: 'Settings'
-  },
-  {
-    icon: CreditCardIcon,
-    property: 'Billing'
-  },
+
   {
     icon: BellIcon,
     property: 'Notifications'
@@ -38,12 +31,36 @@ const listItems = [
   }
 ]
 
+
+const adminlistItems = [
+  {
+    icon: UserIcon,
+    property: 'Profile'
+  },
+  {
+    icon: LayoutDashboard,
+    property: 'Admin Dashboard'
+  },
+
+  {
+    icon: BellIcon,
+    property: 'Notifications'
+  },
+  {
+    icon: LogOutIcon,
+    property: 'Sign Out'
+  }
+]
+
+
+
 const DropdownMenuButton = ({ user }) => {
   const dispactch = useDispatch();
   const nav = useNavigate();
+  const listItem = user?.role === 'admin' ? adminlistItems : userlistItems;
+
   const { isLoading, error, data } = useGetUserQuery(user.token);
   if (isLoading) return <Button variant='secondary' size='icon' className='overflow-hidden rounded-full'>
-
   </Button>
   if (error) return <p className='text-red-500'>{error.data?.message}</p>;
 
@@ -59,7 +76,7 @@ const DropdownMenuButton = ({ user }) => {
       <DropdownMenuContent className='w-56'>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuGroup>
-          {listItems.map((item, index) => {
+          {listItem.map((item, index) => {
 
 
             return <DropdownMenuItem
@@ -72,6 +89,10 @@ const DropdownMenuButton = ({ user }) => {
 
                   case 'Profile':
                     nav('/profile');
+                    break;
+
+                  case 'Admin Dashboard':
+                    nav('/admin-dashboard');
                     break;
 
 
