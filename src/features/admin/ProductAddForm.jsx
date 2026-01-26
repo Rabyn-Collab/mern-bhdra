@@ -17,24 +17,37 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Formik } from "formik"
-import { useState } from "react"
 import { useNavigate } from "react-router"
 import * as Yup from "yup"
 import { Spinner } from "../../components/ui/spinner.jsx"
 import { toast } from "sonner"
 import { Textarea } from "../../components/ui/textarea.jsx"
+import { useRef } from "react"
 
 
+const productSchema = Yup.object({
+  title: Yup.string().min(4).max(50).required("Title is required"),
+  detail: Yup.string().min(10).max(200).required("Detail is required"),
+  brand: Yup.string().required("Brand is required"),
+  price: Yup.number().required("Price is required"),
+  category: Yup.string().required("Category is required"),
+  stock: Yup.number().required("Stock is required"),
+  image: Yup.mixed()
+    .test('fileType', 'Unsupported File Format', (values) => {
+      return values.length > 0 && values.some((value) => {
+        return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type)
+      })
 
+    })
+
+    .required("Image is required"),
+})
 
 export default function ProductAddForm() {
   const nav = useNavigate();
+  const inputRef = useRef(null);
 
-  const [show, setShow] = useState(false);
-  const handleShow = () => {
 
-    setShow(!show)
-  };
   return (
     <div>
       <Card className="w-full max-w-sm">
@@ -56,13 +69,18 @@ export default function ProductAddForm() {
               price: '',
               category: '',
               stock: '',
-              image: ''
+              image: '',
+              imagePreview: ''
             }}
 
             onSubmit={async (val) => {
 
+              console.log(val);
+
 
             }}
+
+            validationSchema={productSchema}
 
 
           >
@@ -131,7 +149,9 @@ export default function ProductAddForm() {
                     {touched.stock && errors.stock && <p className="text-red-500">{errors.stock}</p>}
                   </div>
 
-                  <Select>
+                  <Select
+                    onValueChange={(e) => setFieldValue('brand', e)}
+                  >
 
                     <SelectTrigger >
                       <SelectValue placeholder="Please Select a Brand" />
@@ -146,10 +166,14 @@ export default function ProductAddForm() {
                       <SelectItem value="tanishq">tanishq</SelectItem>
                       <SelectItem value="kfc">kfc</SelectItem>
                     </SelectContent>
+                    {touched.brand && errors.brand && <p className="text-red-500">{errors.brand}</p>}
                   </Select>
 
 
-                  <Select>
+
+                  <Select
+                    onValueChange={(e) => setFieldValue('category', e)}
+                  >
 
                     <SelectTrigger >
                       <SelectValue placeholder="Please Select a Category" />
@@ -162,7 +186,9 @@ export default function ProductAddForm() {
                       <SelectItem value="electronics">electronics</SelectItem>
                       <SelectItem value="food">food</SelectItem>
                     </SelectContent>
+                    {touched.category && errors.category && <p className="text-red-500">{errors.category}</p>}
                   </Select>
+
 
 
 
@@ -175,19 +201,64 @@ export default function ProductAddForm() {
                       <Label htmlFor="image">Upload an image</Label>
                     </div>
                     <Input
-                      name='image'
+                      id="image"
+                      ref={inputRef}
+                      className={'hidden'}
+                      name="image"
+                      type="file"
+                      multiple
                       onChange={(e) => {
-                        const file = e.target.files[0];
-                        setFieldValue('imagePreview', URL.createObjectURL(file));
+                        if (!e.target.files) return;
 
-                        setFieldValue('image', file);
+                        const filesArray = Array.from(e.target.files);
+                        const imageUrls = filesArray.map((file) =>
+                          URL.createObjectURL(file)
+                        );
+                        setFieldValue("imagePreview", imageUrls);
+                        setFieldValue("image", filesArray);
 
                       }}
+                    />
+                    <Label
+                      htmlFor="image"
+                      className="inline-flex cursor-pointer items-center rounded-md border px-4 py-2 text-sm hover:bg-muted"
+                    >
+                      Choose images
+                    </Label>
 
-
-                      id="image" type="file" />
                     {touched.image && errors.image && <p className="text-red-500">{errors.image}</p>}
-                    {values.imagePreview && !errors.image && <img src={values.imagePreview} alt="" />}
+
+                    {values.imagePreview.length > 0 && !errors.image && (
+                      <div className="flex flex-wrap gap-2">
+                        {values.imagePreview.map((url, index) => (
+                          <div key={index} className="relative">
+                            <img
+                              src={url}
+                              alt={`Image ${index}`}
+                              className="w-32 h-32 object-cover rounded border"
+                            />
+
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updatedUrls = values.imagePreview.filter(
+                                  (_, i) => i !== index
+                                );
+                                const updatedImages = values.image.filter(
+                                  (_, i) => i !== index
+                                );
+
+                                setFieldValue("imagePreview", updatedUrls);
+                                setFieldValue("image", updatedImages);
+                              }}
+                              className="absolute top-1 right-1 bg-red-500 text-white w-6 h-6 rounded-full text-xs"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
 
 
                   </div>
@@ -195,12 +266,12 @@ export default function ProductAddForm() {
 
                 </div>
 
-                {/* <Button
-                  disabled={isLoading}
+                <Button
+                  //disabled={isLoading}
                   type="submit" className="w-full mt-6">
-                  {isLoading ? <Spinner /> : 'Sign Up'}
+                  {false ? <Spinner /> : 'Submit'}
 
-                </Button> */}
+                </Button>
               </form>
 
             )}
