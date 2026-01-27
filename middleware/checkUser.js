@@ -16,11 +16,10 @@ export const checkUser = (req, res, next) => {
   }
 
 
+}
 
 
-
-
-
-
-
+export const adminCheck = (req, res, next) => {
+  if (req.role !== "admin") return res.status(403).json({ message: "Forbidden" });
+  return next();
 }

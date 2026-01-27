@@ -4,6 +4,7 @@ import { productSchema, validators } from '../utlis/validator.js';
 import { fileCheck, updateFileCheck } from '../middleware/fileCheck.js';
 import mongoose from 'mongoose';
 import { notAllowed } from '../utlis/notAllowed.js';
+import { adminCheck, checkUser } from '../middleware/checkUser.js';
 
 
 
@@ -15,10 +16,10 @@ router.param('id', (req, res, next, id) => {
   next();
 });
 
-router.route('/').get(getProducts).post(validators.body(productSchema), fileCheck, createProduct).all(notAllowed);
+router.route('/').get(getProducts).post(checkUser, adminCheck, validators.body(productSchema), fileCheck, createProduct).all(notAllowed);
 
 
-router.route('/:id').get(getProduct).patch(updateFileCheck, updateProduct).delete(deleteProduct).all(notAllowed);
+router.route('/:id').get(getProduct).patch(checkUser, adminCheck, updateFileCheck, updateProduct).delete(deleteProduct).all(notAllowed);
 
 
 
