@@ -23,6 +23,8 @@ import { Spinner } from "../../components/ui/spinner.jsx"
 import { toast } from "sonner"
 import { Textarea } from "../../components/ui/textarea.jsx"
 import { useRef } from "react"
+import { useCreateProductMutation } from "../product/productApi.js"
+import { useSelector } from "react-redux"
 
 
 const productSchema = Yup.object({
@@ -44,6 +46,9 @@ const productSchema = Yup.object({
 })
 
 export default function ProductAddForm() {
+  const { user } = useSelector((state) => state.userSlice);
+
+  const [addProduct, { isLoading }] = useCreateProductMutation();
   const nav = useNavigate();
   const inputRef = useRef(null);
 
@@ -74,8 +79,32 @@ export default function ProductAddForm() {
             }}
 
             onSubmit={async (val) => {
+              const formData = new FormData();
+              formData.append('title', val.title);
+              formData.append('detail', val.detail);
+              formData.append('brand', val.brand);
+              formData.append('price', val.price);
+              formData.append('category', val.category);
+              formData.append('stock', val.stock);
 
-              console.log(val);
+
+              val.image.forEach((image) => {
+                formData.append('image', image);
+              })
+              try {
+
+
+
+                await addProduct({
+                  body: formData,
+                  token: user.token
+                }).unwrap();
+                toast.success("Product added successfully");
+
+              } catch (err) {
+                toast.error(err.data.message);
+
+              }
 
 
             }}
@@ -267,9 +296,9 @@ export default function ProductAddForm() {
                 </div>
 
                 <Button
-                  //disabled={isLoading}
+                  disabled={isLoading}
                   type="submit" className="w-full mt-6">
-                  {false ? <Spinner /> : 'Submit'}
+                  {isLoading ? <Spinner /> : 'Submit'}
 
                 </Button>
               </form>

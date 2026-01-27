@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from '../../components/ui/button.jsx'
 import { EditIcon, TrashIcon } from 'lucide-react'
 import { base } from '../../app/mainApi.js'
+import DeleteProduct from './DeleteProduct.jsx'
 
 const items = [
   {
@@ -92,7 +93,9 @@ export default function ProductList() {
                   <Button variant='ghost'> <EditIcon /></Button>
                 </TableCell>
                 <TableCell className='text-right'>
-                  <Button variant='ghost'><TrashIcon /></Button>
+
+                  <DeleteProduct id={_id} />
+
 
                 </TableCell>
               </TableRow>
