@@ -100,6 +100,7 @@ export default function ProductAddForm() {
                   token: user.token
                 }).unwrap();
                 toast.success("Product added successfully");
+                nav(-1);
 
               } catch (err) {
                 toast.error(err.data.message);

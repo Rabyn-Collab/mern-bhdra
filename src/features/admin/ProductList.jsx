@@ -6,6 +6,7 @@ import { Button } from '../../components/ui/button.jsx'
 import { EditIcon, TrashIcon } from 'lucide-react'
 import { base } from '../../app/mainApi.js'
 import DeleteProduct from './DeleteProduct.jsx'
+import { useNavigate } from 'react-router'
 
 const items = [
   {
@@ -54,6 +55,7 @@ const items = [
 export default function ProductList() {
 
   const { isLoading, error, data } = useGetProductsQuery();
+  const nav = useNavigate();
 
   if (isLoading) return <p className='mt-2'>Loading...</p>
   if (error) return <p>{error.data?.message}</p>
@@ -90,7 +92,9 @@ export default function ProductList() {
                 <TableCell>{price}</TableCell>
                 <TableCell>{stock}</TableCell>
                 <TableCell>
-                  <Button variant='ghost'> <EditIcon /></Button>
+                  <Button
+                    onClick={() => nav(`/product-edit/${_id}`)}
+                    variant='ghost'> <EditIcon /></Button>
                 </TableCell>
                 <TableCell className='text-right'>
 
