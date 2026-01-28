@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const supportedFormats = ['.jpg', '.png', '.jpeg', '.gif', '.webp'];
 
 
-let imagepaths = [];
+
 
 const multipleFileUpload = (file) => {
   file.forEach((item) => {
@@ -27,18 +27,7 @@ const multipleFileUpload = (file) => {
 }
 
 const singleFileUpload = (file) => {
-  const ext = path.extname(file.name);
 
-  if (!supportedFormats.includes(ext)) return res.status(400).json({ message: "Unsupported file format" });
-
-  const imagePath = `${uuidv4()}-${file.name}`;
-  imagepaths.push(imagePath);
-
-  file.mv(`./uploads/${imagePath}`, (err) => {
-    if (err) return res.status(500).json({ message: "Something went wrong" });
-
-
-  });
 
 }
 
@@ -54,12 +43,46 @@ export const fileCheck = (req, res, next) => {
 
   if (isArray) {
 
-    multipleFileUpload(file);
+    let imagepaths = [];
+    file.forEach((item) => {
+      const ext = path.extname(item.name);
+      if (!supportedFormats.includes(ext)) return res.status(400).json({ message: "Unsupported file format" });
+      const imagePath = `${uuidv4()}-${item.name}`;
+
+      imagepaths.push(imagePath);
+
+
+      item.mv(`./uploads/${imagePath}`, (err) => {
+        if (err) return res.status(500).json({ message: "Something went wrong" });
+
+
+      });
+
+
+
+
+    });
+
+    req.imagePath = imagepaths;
+    next();
 
 
   } else {
+    let imagepaths = [];
+    const ext = path.extname(file.name);
 
-    singleFileUpload(file);
+    if (!supportedFormats.includes(ext)) return res.status(400).json({ message: "Unsupported file format" });
+
+    const imagePath = `${uuidv4()}-${file.name}`;
+    imagepaths.push(imagePath);
+
+    file.mv(`./uploads/${imagePath}`, (err) => {
+      if (err) return res.status(500).json({ message: "Something went wrong" });
+
+
+    });
+    req.imagePath = imagepaths;
+    next();
 
 
 
@@ -67,8 +90,7 @@ export const fileCheck = (req, res, next) => {
   }
 
 
-  req.imagePath = imagepaths;
-  next();
+
 
 
 

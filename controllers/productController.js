@@ -31,6 +31,7 @@ export const getProduct = async (req, res) => {
 
 
 export const createProduct = async (req, res) => {
+  console.log('sello jee');
   const { title, detail, price, stock, category, brand } = req.body;
   try {
 
