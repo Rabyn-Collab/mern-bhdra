@@ -1,3 +1,4 @@
+import { base } from "../../app/mainApi.js";
 import { useGetProductsQuery } from "./productApi.js"
 
 export default function AllProduct() {
@@ -7,10 +8,18 @@ export default function AllProduct() {
 
 
   return (
-    <div>
+    <div className="grid grid-cols-5 gap-5">
       {data.map((product) => {
-        return <div key={product._id}>
-          <p>{product.title}</p>
+        return <div key={product._id} className="shadow-lg hover:shadow-xl space-y-2">
+          <img
+            className="h-60 object-cover w-full"
+            src={`${base}/${product.image[0]}`} alt="" />
+          <div className="p-2">
+            <p className="font-semibold">{product.title}</p>
+            <p className="text-red-500">Rs.{product.price}</p>
+
+          </div>
+
 
         </div>
       })}
