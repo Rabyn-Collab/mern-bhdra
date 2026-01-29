@@ -33,7 +33,9 @@ const registerScema = Yup.object({
       }
       return true
     }
-  ),
+  ).test('fileSize', 'File is too large (max 5MB)', (val) => {
+    return val && val.size <= 5 * 1024 * 1024;
+  })
 })
 
 export default function UserProfile() {
@@ -190,7 +192,7 @@ export default function UserProfile() {
                 <Button
                   disabled={isLoad}
                   type="submit" className="w-full mt-6">
-                  {isLoad ? <Spinner /> : 'Sign Up'}
+                  {isLoad ? <Spinner /> : 'Update'}
 
                 </Button>
               </form>

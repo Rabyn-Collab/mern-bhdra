@@ -7,6 +7,7 @@ import UserProfile from "./features/user/UserProfile.jsx";
 import Dashboard from "./features/admin/Dashboard.jsx";
 import ProductAddForm from "./features/admin/ProductAddForm.jsx";
 import ProductEditForm from "./features/admin/ProductEditForm.jsx";
+import Home from "./features/home/Home.jsx";
 
 export default function App() {
 
@@ -15,6 +16,11 @@ export default function App() {
       path: "/",
       element: <RootLayout />,
       children: [
+
+        {
+          index: true,
+          element: <Home />
+        },
 
         {
           element: <IsLogin />,

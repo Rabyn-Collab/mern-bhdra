@@ -36,10 +36,12 @@ const productSchema = Yup.object({
   category: Yup.string().required("Category is required"),
   stock: Yup.number().required("Stock is required"),
   image: Yup.mixed()
-    .test('fileType', 'Unsupported File Format', (values) => {
-      return values && values.length > 0 && values.some((value) => {
-        return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type)
-      })
+    .test('fileType', 'Unsupported File Format', (files) => {
+      if (!files || files.length === 0) return true; // ✅ optional
+
+      return files.every((file) =>
+        ["image/jpeg", "image/png", "image/jpg"].includes(file.type)
+      );
 
     }),
 })
@@ -106,12 +108,13 @@ export default function ProductEditForm() {
 
 
 
-                await addProduct({
+                await updateProduct({
                   body: formData,
                   token: user.token,
+                  id: id
 
                 }).unwrap();
-                toast.success("Product added successfully");
+                toast.success("Product updated successfully");
                 nav(-1);
 
               } catch (err) {
