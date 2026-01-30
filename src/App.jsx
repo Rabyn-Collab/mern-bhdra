@@ -8,8 +8,11 @@ import Dashboard from "./features/admin/Dashboard.jsx";
 import ProductAddForm from "./features/admin/ProductAddForm.jsx";
 import ProductEditForm from "./features/admin/ProductEditForm.jsx";
 import Home from "./features/home/Home.jsx";
+import ProductDetail from "./features/product/ProductDetail.jsx";
 
 export default function App() {
+
+
 
   const router = createBrowserRouter([
     {
@@ -34,6 +37,11 @@ export default function App() {
               element: <Register />,
             }
           ]
+        },
+        {
+          path: 'product/:id',
+          element: <ProductDetail />
+
         },
         {
           path: "admin-dashboard",
