@@ -19,10 +19,17 @@ export const cartSlice = createSlice({
         setCartsToLocal(state.cart);
 
       }
-
+    },
+    removeSingle: (state, action) => {
+      state.cart = state.cart.filter(item => item.id !== action.payload.id);
+      setCartsToLocal(state.cart);
+    },
+    clearCart: (state) => {
+      state.cart = [];
+      setCartsToLocal(state.cart);
     }
   }
 });
 
 
-export const { setCart } = cartSlice.actions;
+export const { setCart, removeSingle, clearCart } = cartSlice.actions;

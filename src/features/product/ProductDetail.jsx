@@ -1,18 +1,21 @@
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import { useGetProductQuery } from "./productApi.js";
 import { getRating } from "../../lib/rating.js";
 import { Button } from "../../components/ui/button.jsx";
 import { base } from "../../app/mainApi.js";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "../carts/cartSlice.js";
 
 export default function ProductDetail() {
   const { id } = useParams();
+  const { cart } = useSelector(state => state.cartSlice);
+  const isExist = cart.find(item => item.id === id);
   const dispatch = useDispatch();
+  const nav = useNavigate();
   const { data, isLoading, error } = useGetProductQuery(id);
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState(isExist ? isExist.quantity : 1);
   const [index, setIndex] = useState(0);
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>{error.data?.message}</p>;
@@ -26,6 +29,7 @@ export default function ProductDetail() {
       price: product.price,
       quantity: count
     }));
+    nav('/order-place');
   }
 
 
