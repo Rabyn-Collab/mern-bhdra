@@ -32,7 +32,7 @@ export const getProduct = async (req, res) => {
 
 export const createProduct = async (req, res) => {
 
-  const { title, detail, price, stock, category, brand } = req.body;
+  const { title, detail, price, stock, category, brand, image } = req.body;
   try {
 
     await Product.create({
@@ -40,7 +40,7 @@ export const createProduct = async (req, res) => {
       detail,
       price,
       stock,
-      image: req.imagePath,
+      image,
       category,
       brand
     });

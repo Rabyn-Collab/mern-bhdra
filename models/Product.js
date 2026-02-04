@@ -18,6 +18,12 @@ const productSchema = new mongoose.Schema({
 
   price: {
     type: Number,
+    validate: {
+      validator: (value) => {
+        return value >= 0;
+      },
+      message: "Price must be non-negative"
+    },
     required: true
   },
 
@@ -32,7 +38,15 @@ const productSchema = new mongoose.Schema({
 
   image: {
     type: Array,
-    required: true
+    validate: {
+      validator: (arr) =>
+        Array.isArray(arr) &&
+        arr.length > 0 &&
+        arr.every(
+          (img) => typeof img === "string" && img.trim() !== ""
+        ),
+      message: "Image must be an array of non-empty strings"
+    }
   },
 
   category: {
