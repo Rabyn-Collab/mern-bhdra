@@ -10,6 +10,7 @@ import { setCart } from "../carts/cartSlice.js";
 
 export default function ProductDetail() {
   const { id } = useParams();
+  const { user } = useSelector(state => state.userSlice);
   const { cart } = useSelector(state => state.cartSlice);
   const isExist = cart.find(item => item.id === id);
   const dispatch = useDispatch();
@@ -76,7 +77,9 @@ export default function ProductDetail() {
 
           </div>
 
-          <Button onClick={() => handleCart(data)} className="mt-5">Add To Cart</Button>
+          <Button
+            disabled={!user}
+            onClick={() => handleCart(data)} className="mt-5">Add To Cart</Button>
         </div>
 
       </div>

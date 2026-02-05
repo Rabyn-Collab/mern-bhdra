@@ -2,14 +2,53 @@ import { useDispatch, useSelector } from "react-redux";
 import { base } from "../../app/mainApi.js";
 import { Button } from "../../components/ui/button.jsx";
 import { MinusIcon, PlusIcon, TrashIcon } from "lucide-react";
-import { removeSingle, setCart } from "../carts/cartSlice.js";
+import { clearCart, removeSingle, setCart } from "../carts/cartSlice.js";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { useCreateOrderMutation } from "./orderApi.js";
+import { toast } from "sonner";
+import { Spinner } from "../../components/ui/spinner.jsx";
 
 export default function PlaceOrder() {
   const dispatch = useDispatch();
+  const [addOrder, { isLoading }] = useCreateOrderMutation();
 
   const { cart } = useSelector(state => state.cartSlice);
+  const { user } = useSelector(state => state.userSlice);
 
   const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+
+  const handleOrder = async () => {
+    try {
+      await addOrder({
+        token: user.token,
+        body: {
+          products: cart.map((item) => {
+            return {
+              product: item.id,
+              quantity: item.quantity
+            }
+          }),
+          totalAmount: total
+        }
+
+      }).unwrap();
+      dispatch(clearCart());
+      toast.success('Order placed successfully');
+    } catch (err) {
+      toast.error(err.data.message);
+    }
+  }
 
 
 
@@ -75,7 +114,27 @@ export default function PlaceOrder() {
 
           <div className="place-self-center space-y-2">
             <h3>Total Rs.{total}</h3>
-            <Button>Place an Order</Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="outline">
+                  {isLoading ? <Spinner /> : 'Place Order'}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    You want to place an Order
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleOrder}
+                  >Continue</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
 
 

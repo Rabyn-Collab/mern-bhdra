@@ -1,4 +1,4 @@
-import { UserIcon, BellIcon, LogOutIcon, LayoutDashboard, } from 'lucide-react'
+import { UserIcon, BellIcon, LogOutIcon, LayoutDashboard, ShoppingBagIcon, ListOrdered, } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -19,6 +19,15 @@ const userlistItems = [
   {
     icon: UserIcon,
     property: 'Profile'
+  },
+  {
+    icon: ShoppingBagIcon,
+    property: 'Cart'
+  },
+  {
+    icon: ListOrdered,
+    property: 'My Orders'
+
   },
 
   {
@@ -93,6 +102,10 @@ const DropdownMenuButton = ({ user }) => {
 
                   case 'Admin Dashboard':
                     nav('/admin-dashboard');
+                    break;
+
+                  case 'Cart':
+                    nav('/order-place');
                     break;
 
 
