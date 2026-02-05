@@ -16,7 +16,7 @@ router.param('id', (req, res, next, id) => {
   next();
 });
 
-router.route('/').get(getProducts).post(createProduct).all(notAllowed);
+router.route('/').get(getProducts).post(checkUser, adminCheck, validators.body(productSchema), fileCheck, createProduct).all(notAllowed);
 
 
 router.route('/:id').get(getProduct).patch(checkUser, adminCheck, updateFileCheck, updateProduct).delete(deleteProduct).all(notAllowed);
