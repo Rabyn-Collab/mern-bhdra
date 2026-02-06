@@ -10,6 +10,7 @@ import ProductEditForm from "./features/admin/ProductEditForm.jsx";
 import Home from "./features/home/Home.jsx";
 import ProductDetail from "./features/product/ProductDetail.jsx";
 import PlaceOrder from "./features/orders/PlaceOrder.jsx";
+import OrderPage from "./features/orders/OrderPage.jsx";
 
 export default function App() {
 
@@ -60,6 +61,10 @@ export default function App() {
         {
           path: "profile",
           element: <UserProfile />
+        },
+        {
+          path: 'orders',
+          element: <OrderPage />
         },
 
         {

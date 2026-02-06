@@ -7,6 +7,7 @@ import { MinusIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "../carts/cartSlice.js";
+import ReviewForm from "../reviews/ReviewForm.jsx";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -92,6 +93,8 @@ export default function ProductDetail() {
 
       </div>
 
+
+      <ReviewForm />
 
 
     </div>

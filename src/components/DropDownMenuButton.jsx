@@ -108,6 +108,10 @@ const DropdownMenuButton = ({ user }) => {
                     nav('/order-place');
                     break;
 
+                  case 'My Orders':
+                    nav('/orders');
+                    break;
+
 
                 }
               }}
