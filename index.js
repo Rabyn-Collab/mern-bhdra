@@ -2,6 +2,7 @@ import express from 'express';
 import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
+import reviewRoutes from './routes/reviewRoutes.js';
 import dotenv from 'dotenv';
 const app = express();
 import mongoose from 'mongoose';
@@ -32,6 +33,7 @@ app.use(fileUpload({
 app.use(express.json());
 app.use(express.static('uploads'));
 app.get('/', (req, res) => {
+
   return res.status(200).json({
     message: "Welcome to backened"
   });
@@ -41,6 +43,7 @@ app.get('/', (req, res) => {
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 
 

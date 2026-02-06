@@ -10,8 +10,7 @@ export const getOrders = async (req, res) => {
     const role = req.role;
     if (role === "user") {
       const orders = await Order.find({ user: req.userId }).populate([{
-        path: 'products.product',
-        select: '-price'
+        path: 'products.product'
 
       },
       {
