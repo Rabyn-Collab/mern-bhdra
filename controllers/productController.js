@@ -4,7 +4,10 @@ import fs from "fs";
 
 export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find({});
+    const products = await Product.find({
+      brand: { $regex: 'nike', $options: 'i' }
+
+    });
 
     return res.status(200).json(products);
   } catch (err) {

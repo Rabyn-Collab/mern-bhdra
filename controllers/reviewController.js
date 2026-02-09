@@ -1,3 +1,4 @@
+import Product from "../models/Product.js";
 import Review from "../models/Review.js";
 
 
@@ -37,6 +38,14 @@ export const createReview = async (req, res) => {
       comment,
       rating
     });
+
+    const reviews = await Review.find({ product: id });
+    const product = await Product.findById(id);
+
+    const avg = reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length;
+    product.rating = Number(avg.toFixed(1));
+    await product.save();
+
 
     return res.status(201).json({ message: "Review created successfully" });
 
