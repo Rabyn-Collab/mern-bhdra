@@ -12,6 +12,10 @@ import {
 } from "@/components/ui/select";
 
 import * as Yup from "yup";
+import { useAddReviewMutation } from "./reviewApi.js";
+import { Spinner } from "../../components/ui/spinner.jsx";
+import { toast } from "sonner";
+import { useSelector } from "react-redux";
 
 
 const reviewSchema = Yup.object({
@@ -21,7 +25,9 @@ const reviewSchema = Yup.object({
 
 
 
-export default function ReviewForm() {
+export default function ReviewForm({ id }) {
+  const [addReview, { isLoading }] = useAddReviewMutation();
+  const { user } = useSelector((state) => state.userSlice);
   return (
     <div className="mt-5">
 
@@ -34,7 +40,19 @@ export default function ReviewForm() {
           comment: ''
         }}
 
-        onSubmit={(val) => {
+        onSubmit={async (val, { resetForm }) => {
+          try {
+            await addReview({
+              id,
+              token: user.token,
+              body: val
+            }).unwrap();
+            resetForm();
+            toast.success('Review added successfully');
+          } catch (err) {
+            toast.error(err.data.message);
+          }
+
 
         }}
 
@@ -48,6 +66,7 @@ export default function ReviewForm() {
             className="space-y-5 max-w-xl">
 
             <Select
+              value={values.rating}
               name="rating"
               onValueChange={(e) => setFieldValue("rating", e)}
             >
@@ -73,7 +92,12 @@ export default function ReviewForm() {
               name="comment"
               placeholder="Write your review" />
             {errors.comment && touched.comment && <p className="text-red-500">{errors.comment}</p>}
-            <Button type="submit">Submit</Button>
+            <Button
+              disabled={isLoading}
+              type="submit">
+
+              {isLoading ? <Spinner /> : "Submit"}
+            </Button>
 
           </form>
         )}

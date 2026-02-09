@@ -2,12 +2,11 @@ import { mainApi } from "../../app/mainApi.js";
 
 
 
-
-const reviewApi = mainApi.enhanceEndpoints({
+const reviewApi = mainApi.injectEndpoints({
 
   endpoints: (builder) => ({
     getReviews: builder.query({
-      query: () => ({
+      query: (id) => ({
         url: `/reviews/products/${id}`,
         method: 'GET'
       }),

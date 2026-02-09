@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "../carts/cartSlice.js";
 import ReviewForm from "../reviews/ReviewForm.jsx";
+import ReviewList from "../reviews/ReviewList.jsx";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -94,7 +95,9 @@ export default function ProductDetail() {
       </div>
 
 
-      <ReviewForm />
+      {user && user?.role === 'user' && <ReviewForm id={data._id} />}
+
+      <ReviewList id={data._id} />
 
 
     </div>
