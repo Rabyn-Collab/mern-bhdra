@@ -1,5 +1,5 @@
 import express from 'express';
-import { createProduct, deleteProduct, getProduct, getProducts, updateProduct } from '../controllers/productController.js';
+import { createProduct, deleteProduct, getProduct, getProducts, top5Product, updateProduct } from '../controllers/productController.js';
 import { productSchema, validators } from '../utlis/validator.js';
 import { fileCheck, updateFileCheck } from '../middleware/fileCheck.js';
 import mongoose from 'mongoose';
@@ -17,6 +17,7 @@ router.param('id', (req, res, next, id) => {
 });
 
 router.route('/').get(getProducts).post(checkUser, adminCheck, validators.body(productSchema), fileCheck, createProduct).all(notAllowed);
+router.route('/top-5').get(top5Product).all(notAllowed);
 
 
 router.route('/:id').get(getProduct).patch(checkUser, adminCheck, updateFileCheck, updateProduct).delete(deleteProduct).all(notAllowed);

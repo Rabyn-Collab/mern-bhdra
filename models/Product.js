@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 
+export const brand = ["apple", "samsung", "nike", "adidas", "puma", "tanishq", "kfc"];
+
+export const category = ["men's clothing", "women's clothing", "jewelery", "electronics", "food"];
+
 const productSchema = new mongoose.Schema({
 
   title: {
@@ -52,7 +56,7 @@ const productSchema = new mongoose.Schema({
   category: {
     type: String,
     enum: {
-      values: ["men's clothing", "women's clothing", "jewelery", "electronics", "food"],
+      values: category,
       message: "{VALUE} is not supported"
     },
     required: true
@@ -61,7 +65,7 @@ const productSchema = new mongoose.Schema({
   brand: {
     type: String,
     enum: {
-      values: ["apple", "samsung", "nike", "adidas", "puma", "tanishq", "kfc"],
+      values: brand,
       message: "{VALUE} is not supported"
     },
     required: true
