@@ -11,6 +11,7 @@ import Home from "./features/home/Home.jsx";
 import ProductDetail from "./features/product/ProductDetail.jsx";
 import PlaceOrder from "./features/orders/PlaceOrder.jsx";
 import OrderPage from "./features/orders/OrderPage.jsx";
+import SearchPage from "./features/search/SearchPage.jsx";
 
 export default function App() {
 
@@ -70,6 +71,10 @@ export default function App() {
         {
           path: 'order-place',
           element: <PlaceOrder />
+        },
+        {
+          path: 'search',
+          element: <SearchPage />
         }
 
 

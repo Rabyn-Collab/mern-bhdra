@@ -3,6 +3,7 @@ import DropdownMenuButton from "./DropDownMenuButton.jsx";
 import { Button } from "./ui/button.jsx";
 import { NavLink } from "react-router";
 import { useSelector } from "react-redux";
+import SearchForm from "../features/search/SearchForm.jsx";
 
 export default function Header() {
   const { user } = useSelector((state) => state.userSlice);
@@ -16,9 +17,16 @@ export default function Header() {
 
       </div>
 
+
+
+
       <div>
+        <SearchForm />
+      </div>
 
 
+
+      <div>
         {user ? <DropdownMenuButton user={user} /> : <div className="flex gap-3">
           <NavLink to="/login">
             <Button variant="text">Login</Button>
@@ -31,6 +39,10 @@ export default function Header() {
 
 
         </div>}
+
+
+
+
 
 
 
