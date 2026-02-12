@@ -24,7 +24,7 @@ mongoose.connect(process.env.DB_URL).then((val) => {
 
 app.use(cors({
   credentials: true,
-  origin: ['http://localhost:5173']
+  origin: ['http://localhost:5173', 'https://mern-bhdra.vercel.app']
 }));
 app.use(cookieParser());
 app.use(fileUpload({
