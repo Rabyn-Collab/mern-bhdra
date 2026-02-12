@@ -4,7 +4,7 @@ import { getRating } from "../../lib/rating.js";
 import { useGetProductsQuery } from "./productApi.js"
 import { Button } from "../../components/ui/button.jsx";
 import { useEffect } from "react";
-
+//
 export default function AllProduct() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get('page') || 1;
