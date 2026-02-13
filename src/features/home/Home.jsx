@@ -9,15 +9,20 @@ export default function Home() {
 
   useEffect(() => {
     // Ensure this code runs only on the client side
-    if (typeof window !== 'undefined') {
-      OneSignal.init({
-        appId: 'f80e64cd-40ad-495b-a0a0-e94b0d4fcba7',
-        // You can add other initialization options here
-        notifyButton: {
-          enable: true,
-        }
-      });
-    }
+
+    OneSignal.init({
+      appId: 'f80e64cd-40ad-495b-a0a0-e94b0d4fcba7',
+      // You can add other initialization options here
+      notifyButton: {
+        enable: true,
+      },
+      welcomeNotification: {
+        title: "Welcome to My App",
+        message: "Thank you for using our app!",
+      },
+
+    });
+
   }, []);
 
 
