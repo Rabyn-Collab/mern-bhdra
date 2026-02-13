@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 export default function Home() {
 
-  //
+
 
   useEffect(() => {
     // Ensure this code runs only on the client side
