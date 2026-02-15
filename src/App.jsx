@@ -12,8 +12,26 @@ import ProductDetail from "./features/product/ProductDetail.jsx";
 import PlaceOrder from "./features/orders/PlaceOrder.jsx";
 import OrderPage from "./features/orders/OrderPage.jsx";
 import SearchPage from "./features/search/SearchPage.jsx";
-
+import OneSignal from 'react-onesignal';
+import { useEffect } from "react";
 export default function App() {
+  useEffect(() => {
+    // Ensure this code runs only on the client side
+
+    OneSignal.init({
+      appId: 'f80e64cd-40ad-495b-a0a0-e94b0d4fcba7',
+      // You can add other initialization options here
+      notifyButton: {
+        enable: true,
+      },
+      welcomeNotification: {
+        title: "Welcome to My App",
+        message: "Thank you for using our app!",
+      },
+
+    });
+
+  }, []);
 
 
 
