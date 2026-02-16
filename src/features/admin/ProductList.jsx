@@ -77,7 +77,7 @@ export default function ProductList() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map(({ _id, image, price, stock, title }) => (
+            {data.products.map(({ _id, image, price, stock, title }) => (
               <TableRow key={_id}>
                 <TableCell>
                   <div className='flex items-center gap-3'>
