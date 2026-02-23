@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card"
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import DeleteEmployee from "@/components/DeleteEmployee";
 
 
 
@@ -32,8 +33,15 @@ export default async function Home() {
             <CardAction>{employee.age}</CardAction>
           </CardHeader>
 
-          <CardFooter>
+          <CardFooter className="flex justify-between">
             <Link href={`/employees/${employee.id}`}><Button>View</Button></Link>
+            <div className="space-x-5">
+
+              <Link href={`/form/edit/${employee.id}`}><Button>Edit</Button></Link>
+
+              <DeleteEmployee id={`${employee.id}`} />
+            </div>
+
           </CardFooter>
         </Card>
       ))}

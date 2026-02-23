@@ -1,5 +1,5 @@
 'use client';
-
+import { Employee } from "@/models/employee";
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -10,24 +10,15 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Spinner } from "@/components/ui/spinner";
-import { addEmployee } from "@/lib/actions"
-import { Formik } from "formik";
-import { useRouter } from "next/navigation";
 import { useTransition } from "react";
+import { Formik } from "formik";
+import { valSchema } from "@/app/form/add/page";
+import { useRouter } from "next/navigation";
+import { Spinner } from "./ui/spinner";
+import { updateEmployee } from "@/lib/actions";
 import { toast } from "sonner";
-import * as Yup from "yup"
 
-
-export const valSchema = Yup.object({
-  fullname: Yup.string().required("Fullname is required"),
-  position: Yup.string().required("Position is required"),
-  age: Yup.number().required("Age is required"),
-});
-
-
-
-export default function AddEmployee() {
+export default function EditForm({ employee }: { employee: Employee }) {
 
   const [loading, startTransition] = useTransition();
   const router = useRouter();
@@ -46,18 +37,19 @@ export default function AddEmployee() {
 
         <Formik
           initialValues={{
-            fullname: '',
-            position: '',
-            age: ''
+            fullname: employee.fullname,
+            position: employee.position,
+            age: employee.age
           }}
 
           onSubmit={(val) => {
 
             startTransition(async () => {
-              const res = await addEmployee({
+              const res = await updateEmployee({
                 fullname: val.fullname,
                 position: val.position,
-                age: Number(val.age)
+                age: Number(val.age),
+                id: employee.id
               });
 
               if (res.success) {
@@ -135,7 +127,7 @@ export default function AddEmployee() {
               <Button
                 disabled={loading}
                 type="submit" className="w-full mt-5">
-                {loading ? <Spinner /> : "Add Employee"}
+                {loading ? <Spinner /> : "Update Employee"}
               </Button>
             </form>
 
@@ -153,6 +145,7 @@ export default function AddEmployee() {
     </Card>
   )
 }
+
 
 
 
