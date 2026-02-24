@@ -11,11 +11,17 @@ import {
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import DeleteEmployee from "@/components/DeleteEmployee";
+import { auth, currentUser } from "@clerk/nextjs/server";
 
 
 
 
 export default async function Home() {
+
+  const m = await currentUser();
+  console.log(m?.firstName);
+  const { isAuthenticated, getToken } = await auth();
+  console.log(await getToken());
 
   const response = await axios.get('https://6985b6ac6964f10bf2543623.mockapi.io/employees');
 

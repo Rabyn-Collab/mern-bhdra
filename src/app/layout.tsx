@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import { Toaster } from "sonner";
+import { ClerkProvider } from "@clerk/nextjs";
 
 
 export const metadata: Metadata = {
@@ -16,22 +17,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
+    <ClerkProvider>
+      <html lang="en">
+        <body>
 
-        <Header />
+          <Header />
 
-        <main className="p-5">
-          {children}
-        </main>
+          <main className="p-5">
+            {children}
+          </main>
 
-        <Toaster
-          position="top-center"
-          duration={700}
-        />
+          <Toaster
+            position="top-center"
+            duration={700}
+          />
 
 
-      </body>
-    </html>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

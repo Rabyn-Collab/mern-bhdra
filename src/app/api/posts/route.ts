@@ -1,8 +1,15 @@
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
 
+  const token = request.headers.get('authorization');
 
-  console.log(searchParams);
+  if (!token) {
+    return Response.json({
+      message: "hello world"
+    }, {
+      status: 401
+    });
+  }
 
 
 
