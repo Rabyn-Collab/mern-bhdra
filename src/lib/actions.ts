@@ -1,17 +1,60 @@
 'use server';
 
-import { Employee } from "@/models/employee";
-import axios from "axios";
 import { revalidatePath } from "next/cache";
+import { connectDb } from "./db";
+import Employee from "@/models/Employee";
+import { EmployeeInterface } from "@/models/employeeInterface";
 
 
 
-export async function addEmployee(employee: Employee) {
-
+export async function getEmployee(id: string) {
+  await connectDb();
   try {
-    await axios.post('https://6985b6ac6964f10bf2543623.mockapi.io/employees', employee);
+    const employee = await Employee.findById(id);
 
+    return {
+      success: true,
+      data: employee
+    }
+  } catch (err: any) {
+
+    return {
+      success: false,
+      message: err.message
+    }
+
+  }
+
+}
+
+
+export async function getEmployees() {
+  await connectDb();
+  try {
+    const employees = await Employee.find({});
+
+    return {
+      success: true,
+      data: employees
+    }
+  } catch (err: any) {
+
+    return {
+      success: false,
+      message: err.message
+    }
+
+  }
+
+}
+
+
+export async function addEmployee(employee: EmployeeInterface) {
+  await connectDb();
+  try {
+    await Employee.create(employee);
     revalidatePath('/');
+
 
     return {
       success: true,
@@ -32,11 +75,17 @@ export async function addEmployee(employee: Employee) {
 
 
 
-export async function updateEmployee(employee: Employee) {
 
+export async function updateEmployee(employee: EmployeeInterface) {
+  await connectDb();
   try {
-    await axios.put(`https://6985b6ac6964f10bf2543623.mockapi.io/employees/${employee.id}`, employee);
+    const isExit = await Employee.findById(employee.id);
 
+    if (!isExit) return {
+      success: false,
+      message: 'Employee not found'
+    }
+    await Employee.findByIdAndUpdate(employee.id, employee);
     revalidatePath('/');
 
     return {
@@ -60,9 +109,10 @@ export async function updateEmployee(employee: Employee) {
 
 
 export async function removemployee(id: string) {
-
+  await connectDb();
   try {
-    await axios.delete(`https://6985b6ac6964f10bf2543623.mockapi.io/employees/${id}`);
+
+    await Employee.findByIdAndDelete(id);
     revalidatePath('/');
     return {
       success: true,

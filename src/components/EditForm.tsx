@@ -1,5 +1,5 @@
 'use client';
-import { Employee } from "@/models/employee";
+import { Employee } from "@/models/employeeInterface";
 import { Button } from "@/components/ui/button"
 import {
   Card,
