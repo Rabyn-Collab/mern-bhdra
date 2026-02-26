@@ -1,161 +1,171 @@
 'use client';
-
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Spinner } from "@/components/ui/spinner";
-import { addEmployee } from "@/lib/actions";
-
-import { Formik } from "formik";
-import { useRouter } from "next/navigation";
-import { useTransition } from "react";
-import { toast } from "sonner";
-import * as Yup from "yup"
+import { Controller, useForm } from "react-hook-form";
+import z from "zod"
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 
-export const valSchema = Yup.object({
-  fullname: Yup.string().required("Fullname is required"),
-  position: Yup.string().required("Position is required"),
-  age: Yup.number().required("Age is required"),
+const formSchema = z.object({
+  fullname: z.string().min(5, 'Fullname must be at lease 5 characters '),
+  email: z.email(),
+  file: z
+    .instanceof(File, { message: 'File is required' })
+    .refine((file) => file.size <= 2 * 1024 * 1024, 'File size must be less than 2MB')
+    .refine((file) => ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'].includes(file.type), 'Only .jpeg and .png files are allowed'),
 });
 
 
+type FormValues = z.infer<typeof formSchema>;
 
-export default function AddEmployee() {
+export default function AddForm() {
 
-  const [loading, startTransition] = useTransition();
-  const router = useRouter();
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      fullname: '',
+      email: '',
+    }
+  },
+
+  );
+
+  const onSubmit = (data: FormValues) => {
+    console.log(data);
+  }
+
+
   return (
-    <Card className="w-full max-w-sm">
-      <CardHeader>
-        <CardTitle>Add Employee</CardTitle>
-        <CardDescription>
-          Enter employee details
-        </CardDescription>
-
-      </CardHeader>
-      <CardContent>
+    <div>
 
 
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="max-w-lg">
+        <FieldSet>
 
-        <Formik
-          initialValues={{
-            fullname: '',
-            position: '',
-            age: ''
-          }}
+          <FieldLegend>Add Form Page</FieldLegend>
+          <FieldDescription>
+            Add detail to add into Database
+          </FieldDescription>
 
-          onSubmit={(val) => {
-
-            startTransition(async () => {
-              const res = await addEmployee({
-                fullname: val.fullname,
-                position: val.position,
-                age: Number(val.age)
-              });
-
-              if (res.success) {
-                toast.success(res.message);
-                router.back();
-              } else {
-                toast.error(res.message);
-              }
-            })
-
-          }}
-
-          validationSchema={valSchema}
-        >
+          <FieldGroup>
 
 
-          {({ handleChange, handleSubmit, values, errors, touched }) => (
+            <Controller
+              name="fullname"
+              control={form.control}
 
-            <form onSubmit={handleSubmit}>
-              <div className="flex flex-col gap-6">
-
-
-                <div className="grid gap-2">
-                  <Label htmlFor="fullname">Fullname</Label>
+              render={({ field, fieldState }) => (
+                <Field
+                  data-invalid={fieldState.invalid}
+                >
+                  <FieldLabel htmlFor="fullname">Fullname</FieldLabel>
                   <Input
-                    onChange={handleChange}
-                    value={values.fullname}
-                    name="fullname"
+                    aria-invalid={fieldState.invalid}
+                    type="text"
                     id="fullname"
-                    type="text"
-                    placeholder="John Doe"
-
+                    {...field}
+                    placeholder="fullname"
                   />
-                  {touched.fullname && errors.fullname && <p className="text-red-500">{errors.fullname}</p>}
-                </div>
+                  {fieldState.invalid && <FieldError
+                    errors={[fieldState.error]}
+                  />}
+                </Field>
+              )}
+            />
 
+            <Controller
+              name="email"
+              control={form.control}
 
-                <div className="grid gap-2">
-                  <Label htmlFor="position">Position</Label>
+              render={({ field, fieldState }) => (
+                <Field
+                  data-invalid={fieldState.invalid}
+                >
+                  <FieldLabel htmlFor="email">Email</FieldLabel>
                   <Input
-                    onChange={handleChange}
-                    value={values.position}
-                    name="position"
-                    id="position"
-                    type="text"
-                    placeholder="Software Engineer"
-
+                    aria-invalid={fieldState.invalid}
+                    type="email"
+                    id="email"
+                    {...field}
+                    placeholder="@example.com"
                   />
-                  {touched.position && errors.position && <p className="text-red-500">{errors.position}</p>}
-                </div>
+                  {fieldState.invalid && <FieldError
+                    errors={[fieldState.error]}
+                  />}
+                </Field>
+              )}
+            />
 
 
-                <div className="grid gap-2">
-                  <Label htmlFor="age">Age</Label>
+
+
+            <Controller
+              name="file"
+              control={form.control}
+
+
+              render={({ field, fieldState }) => {
+                return <Field
+                  data-invalid={fieldState.invalid}
+                >
+                  <FieldLabel htmlFor="file">Select Image</FieldLabel>
                   <Input
-                    onChange={handleChange}
-                    value={values.age}
-                    name="age"
-                    id="age"
-                    type="number"
-                    placeholder="25"
+                    aria-invalid={fieldState.invalid}
+                    type="file"
+                    id="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      field.onChange(file)
+                    }}
 
                   />
-                  {touched.age && errors.age && <p className="text-red-500">{errors.age}</p>}
-                </div>
+                  {fieldState.invalid && <FieldError
+                    errors={[fieldState.error]}
+                  />}
+
+                  {field.value && !fieldState.invalid && !fieldState.error && (
+                    <img className="mt-2 w-32 h-32 object-cover" src={URL.createObjectURL(field.value)} alt="Preview" />
+                  )}
+                </Field>
+              }}
+            />
 
 
 
 
 
 
-              </div>
+
+          </FieldGroup>
 
 
-              <Button
-                disabled={loading}
-                type="submit" className="w-full mt-5">
-                {loading ? <Spinner /> : "Add Employee"}
-              </Button>
-            </form>
+        </FieldSet>
 
-          )}
-
-
-
-        </Formik>
+        <Field className="mt-4" orientation={'horizontal'}>
+          <Button
+            onClick={() => form.reset()}
+            type="button" variant={'outline'}>Reset</Button>
+          <Button type="submit">Submit</Button>
+        </Field>
 
 
 
 
-      </CardContent>
 
-    </Card>
+      </form>
+
+
+
+
+
+
+
+
+
+    </div>
   )
 }
-
-
-
-
-
