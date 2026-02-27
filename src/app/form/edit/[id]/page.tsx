@@ -1,20 +1,21 @@
 import EditForm from "@/components/EditForm";
-import { getEmployee } from "@/lib/actions";
+import { db } from "@/lib/firestore";
+import { doc, getDoc } from "@firebase/firestore";
 
 
 export default async function EmployeeEdit({ params }: { params: Promise<{ id: string }> }) {
 
   const { id } = await params;
 
-  const response = await getEmployee(id);
+  const response = await getDoc(doc(db, 'employees', id));
 
-  const employee = response.data;
+  const employee = response.data() ?? {};
 
   return (
     <div>
 
       <EditForm employee={{
-        id: employee._id.toString(),
+        id: response.id,
         fullname: employee.fullname,
         position: employee.position,
         age: employee.age

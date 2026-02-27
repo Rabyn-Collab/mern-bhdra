@@ -5,15 +5,18 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { addDoc, collection } from "@firebase/firestore";
+import { db } from "@/lib/firestore";
+import { toast } from "sonner";
+import { Spinner } from "@/components/ui/spinner";
 
 
 const formSchema = z.object({
   fullname: z.string().min(5, 'Fullname must be at lease 5 characters '),
-  email: z.email(),
-  file: z
-    .instanceof(File, { message: 'File is required' })
-    .refine((file) => file.size <= 2 * 1024 * 1024, 'File size must be less than 2MB')
-    .refine((file) => ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'].includes(file.type), 'Only .jpeg and .png files are allowed'),
+  position: z.string().min(5, 'Position must be at lease 5 characters '),
+  age: z.coerce.number(),
 });
 
 
@@ -21,18 +24,31 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function AddForm() {
 
+  const [loading, startTransition] = useTransition();
+  const router = useRouter();
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullname: '',
-      email: '',
+      position: '',
+      age: ''
     }
   },
 
   );
 
   const onSubmit = (data: FormValues) => {
-    console.log(data);
+    startTransition(async () => {
+      try {
+        await addDoc(collection(db, 'employees'), data);
+        toast.success('Employee added successfully');
+        router.back();
+      } catch (err) {
+        toast.error('Error adding employee');
+      }
+
+    })
   }
 
 
@@ -75,22 +91,43 @@ export default function AddForm() {
                 </Field>
               )}
             />
-
             <Controller
-              name="email"
+              name="position"
               control={form.control}
 
               render={({ field, fieldState }) => (
                 <Field
                   data-invalid={fieldState.invalid}
                 >
-                  <FieldLabel htmlFor="email">Email</FieldLabel>
+                  <FieldLabel htmlFor="position">Position</FieldLabel>
                   <Input
                     aria-invalid={fieldState.invalid}
-                    type="email"
-                    id="email"
+                    type="text"
+                    id="position"
                     {...field}
-                    placeholder="@example.com"
+                    placeholder="position"
+                  />
+                  {fieldState.invalid && <FieldError
+                    errors={[fieldState.error]}
+                  />}
+                </Field>
+              )}
+            />
+            <Controller
+              name="age"
+              control={form.control}
+
+              render={({ field, fieldState }) => (
+                <Field
+                  data-invalid={fieldState.invalid}
+                >
+                  <FieldLabel htmlFor="age">Age</FieldLabel>
+                  <Input
+                    aria-invalid={fieldState.invalid}
+                    type="number"
+                    id="age"
+                    {...field}
+                    placeholder="90"
                   />
                   {fieldState.invalid && <FieldError
                     errors={[fieldState.error]}
@@ -102,37 +139,8 @@ export default function AddForm() {
 
 
 
-            <Controller
-              name="file"
-              control={form.control}
 
 
-              render={({ field, fieldState }) => {
-                return <Field
-                  data-invalid={fieldState.invalid}
-                >
-                  <FieldLabel htmlFor="file">Select Image</FieldLabel>
-                  <Input
-                    aria-invalid={fieldState.invalid}
-                    type="file"
-                    id="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      field.onChange(file)
-                    }}
-
-                  />
-                  {fieldState.invalid && <FieldError
-                    errors={[fieldState.error]}
-                  />}
-
-                  {field.value && !fieldState.invalid && !fieldState.error && (
-                    <img className="mt-2 w-32 h-32 object-cover" src={URL.createObjectURL(field.value)} alt="Preview" />
-                  )}
-                </Field>
-              }}
-            />
 
 
 
@@ -149,7 +157,11 @@ export default function AddForm() {
           <Button
             onClick={() => form.reset()}
             type="button" variant={'outline'}>Reset</Button>
-          <Button type="submit">Submit</Button>
+          <Button
+            disabled={loading}
+            type="submit">
+            {loading ? <Spinner /> : 'Submit'}
+          </Button>
         </Field>
 
 

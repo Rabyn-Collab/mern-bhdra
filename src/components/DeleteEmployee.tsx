@@ -1,24 +1,30 @@
 'use client';
 
-import { removemployee } from "@/lib/actions";
 import { useTransition } from "react";
 import { Button } from "./ui/button";
 import { Spinner } from "./ui/spinner";
 import { toast } from "sonner";
+import { deleteDoc, doc } from "@firebase/firestore";
+import { db } from "@/lib/firestore";
 
 
-export default function DeleteEmployee({ id }: { id: string }) {
+export default function DeleteEmployee({ id }: { id?: string }) {
   const [isLoading, startTransition] = useTransition();
 
   const handleDelete = () => {
     startTransition(async () => {
-      const res = await removemployee(id);
 
-      if (res.success) {
-        toast.success(res.message);
-      } else {
-        toast.error(res.message);
+      try {
+
+        await deleteDoc(doc(db, 'employees', id!));
+        toast.success('Employee removed successfully');
+      } catch (err) {
+        toast.error('Something went wrong');
+
       }
+
+
+
 
     })
   }

@@ -12,13 +12,16 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useTransition } from "react";
 import { Formik } from "formik";
-import { valSchema } from "@/app/form/add/page";
+
 import { useRouter } from "next/navigation";
 import { Spinner } from "./ui/spinner";
-import { updateEmployee } from "@/lib/actions";
 import { toast } from "sonner";
+import { doc, updateDoc } from "@firebase/firestore";
+import { db } from "@/lib/firestore";
 
 export default function EditForm({ employee }: { employee: Employee }) {
+
+
 
   const [loading, startTransition] = useTransition();
   const router = useRouter();
@@ -45,24 +48,21 @@ export default function EditForm({ employee }: { employee: Employee }) {
           onSubmit={(val) => {
 
             startTransition(async () => {
-              const res = await updateEmployee({
-                fullname: val.fullname,
-                position: val.position,
-                age: Number(val.age),
-                id: employee.id
-              });
+              try {
 
-              if (res.success) {
-                toast.success(res.message);
+                await updateDoc(doc(db, 'employees', employee.id), val);
+                toast.success('Employee updated successfully');
                 router.back();
-              } else {
-                toast.error(res.message);
+
+              } catch (err: any) {
+                toast.error(err.message);
+
               }
             })
 
           }}
 
-          validationSchema={valSchema}
+
         >
 
 
