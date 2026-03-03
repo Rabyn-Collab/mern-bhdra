@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
-
+import { Poppins } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import { Toaster } from "sonner";
-import { ClerkProvider } from "@clerk/nextjs";
+
+const poppins = Poppins({
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-poppins",
+  subsets: ["latin"],
+});
+
 
 
 export const metadata: Metadata = {
@@ -17,24 +21,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body>
-
-          <Header />
-
-          <main className="p-5">
-            {children}
-          </main>
-
-          <Toaster
-            position="top-center"
-            duration={700}
-          />
-
-
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body
+        className={`${poppins.variable}  antialiased`}
+      >
+        {children}
+      </body>
+    </html>
   );
 }
