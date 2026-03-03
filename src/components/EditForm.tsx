@@ -1,5 +1,5 @@
 'use client';
-import { Employee } from "@/models/employeeInterface";
+import { EmployeeInterface } from "@/models/employeeInterface";
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import { doc, updateDoc } from "@firebase/firestore";
 import { db } from "@/lib/firestore";
 
-export default function EditForm({ employee }: { employee: Employee }) {
+export default function EditForm({ employee }: { employee: EmployeeInterface }) {
 
 
 
